@@ -29,8 +29,13 @@ public class ArrayStorage {
         if (getIndex(resume) != -1) {
             System.out.println("Resume with UUID " + resume.getUuid() + " already present");
         } else {
-            storage[size] = resume;
-            size++;
+            if (size < storage.length) {
+                storage[size] = resume;
+                size++;
+            } else {
+                System.out.println("Storage is full!");
+            }
+
         }
     }
 
