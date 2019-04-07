@@ -8,11 +8,11 @@ public class Resume {
     // Unique identifier
     private String uuid;
 
-    public void setUuid(String uuid){
-        this.uuid=uuid;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
-    public String getUuid(){
+    public String getUuid() {
         return uuid;
     }
 
@@ -20,4 +20,14 @@ public class Resume {
     public String toString() {
         return uuid;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Resume other = (Resume) obj;
+        if (other.getUuid().equals(this.uuid)) {
+            return true;
+        }
+        return false;
+    }
+
 }
