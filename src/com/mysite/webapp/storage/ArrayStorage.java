@@ -54,11 +54,9 @@ public class ArrayStorage {
         Resume resume = new Resume();
         resume.setUuid(uuid);
         if (getIndex(resume) != -1) {
-            for (int j = getIndex(resume); j < size - 1; j++) {
-                storage[j] = storage[j + 1];
-            }
+            storage[getIndex(resume)] = storage[size - 1];
+            storage[size - 1] = null;
             size--;
-            storage[size] = null;
         } else {
             System.out.println("Resume with UUID " + uuid + " is not present");
         }
