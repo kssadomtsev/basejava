@@ -2,21 +2,22 @@ package com.mysite.webapp;
 
 import com.mysite.webapp.model.Resume;
 import com.mysite.webapp.storage.ArrayStorage;
+import com.mysite.webapp.storage.Storage;
 
 /**
  * Test for your com.mysite.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    private final static Storage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) {
-        Resume r1 = new Resume();
+        final Resume r1 = new Resume();
         r1.setUuid("uuid1");
-        Resume r2 = new Resume();
+        final Resume r2 = new Resume();
         r2.setUuid("uuid2");
-        Resume r3 = new Resume();
+        final Resume r3 = new Resume();
         r3.setUuid("uuid3");
-        Resume r4 = new Resume();
+        final Resume r4 = new Resume();
         r4.setUuid("uuid4");
 
         ARRAY_STORAGE.save(r1);
