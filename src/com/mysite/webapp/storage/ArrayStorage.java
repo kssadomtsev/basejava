@@ -2,6 +2,8 @@ package com.mysite.webapp.storage;
 
 import com.mysite.webapp.model.Resume;
 
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
@@ -10,8 +12,7 @@ public class ArrayStorage {
     private int size = 0;
 
     public void clear() {
-        Resume[] storage_null = new Resume[size];
-        System.arraycopy(storage_null, 0, storage, 0, size);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
@@ -73,7 +74,7 @@ public class ArrayStorage {
 
     private int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (uuid == storage[i].getUuid()) {
+            if (uuid.equals(storage[i].getUuid())) {
                 return i;
             }
         }

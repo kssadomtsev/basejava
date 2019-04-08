@@ -31,11 +31,11 @@ public class Resume {
             return false;
         }
         Resume resume = (Resume) o;
-        return getUuid().equals(resume.getUuid());
+        return uuid.equals(resume.getUuid());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUuid());
+        return Objects.hash(uuid);
     }
 }
