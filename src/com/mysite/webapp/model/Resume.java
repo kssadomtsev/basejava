@@ -1,10 +1,11 @@
 package com.mysite.webapp.model;
 
+import java.util.Objects;
+
 /**
  * Initial resume class
  */
 public class Resume {
-
     // Unique identifier
     private String uuid;
 
@@ -22,12 +23,15 @@ public class Resume {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        Resume other = (Resume) obj;
-        if (other.getUuid().equals(this.uuid)) {
-            return true;
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resume resume = (Resume) o;
+        return getUuid().equals(resume.getUuid());
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUuid());
+    }
 }
