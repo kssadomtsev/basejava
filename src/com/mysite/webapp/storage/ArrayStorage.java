@@ -10,9 +10,8 @@ public class ArrayStorage {
     private int size = 0;
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            storage[i] = null;
-        }
+        Resume[] storage_null = new Resume[size];
+        System.arraycopy(storage_null, 0, storage, 0, size);
         size = 0;
     }
 
@@ -73,10 +72,8 @@ public class ArrayStorage {
     }
 
     private int getIndex(String uuid) {
-        Resume resume = new Resume();
-        resume.setUuid(uuid);
         for (int i = 0; i < size; i++) {
-            if (storage[i].equals(resume)) {
+            if (uuid == storage[i].getUuid()) {
                 return i;
             }
         }
