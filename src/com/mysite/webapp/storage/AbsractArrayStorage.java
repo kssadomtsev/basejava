@@ -16,7 +16,7 @@ public abstract class AbsractArrayStorage implements Storage {
 
     public void update(Resume resume) {
         int pos = getIndex(resume.getUuid());
-        if (pos != -1) {
+        if (pos >= 0) {
             storage[pos] = resume;
         } else {
             System.out.println("Resume with UUID " + resume.getUuid() + " is not present");
@@ -25,7 +25,7 @@ public abstract class AbsractArrayStorage implements Storage {
 
     public Resume get(String uuid) {
         int pos = getIndex(uuid);
-        if (pos != -1) {
+        if (pos >= 0) {
             return storage[pos];
         } else {
             System.out.println("Resume with UUID " + uuid + " is not present");
