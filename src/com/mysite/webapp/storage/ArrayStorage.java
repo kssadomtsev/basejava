@@ -2,26 +2,10 @@ package com.mysite.webapp.storage;
 
 import com.mysite.webapp.model.Resume;
 
-import java.util.Arrays;
-
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage extends AbsractArrayStorage {
-
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
-    }
-
-    public void update(Resume resume) {
-        int pos = getIndex(resume.getUuid());
-        if (pos != -1) {
-            storage[pos] = resume;
-        } else {
-            System.out.println("Resume with UUID " + resume.getUuid() + " is not present");
-        }
-    }
 
     public void save(Resume resume) {
         if (getIndex(resume.getUuid()) != -1) {
@@ -45,13 +29,6 @@ public class ArrayStorage extends AbsractArrayStorage {
         } else {
             System.out.println("Resume with UUID " + uuid + " is not present");
         }
-    }
-
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
     }
 
     protected int getIndex(String uuid) {
