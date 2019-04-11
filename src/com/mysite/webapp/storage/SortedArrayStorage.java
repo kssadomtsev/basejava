@@ -25,6 +25,5 @@ public class SortedArrayStorage extends AbsractArrayStorage {
         for (int i = index; i < size - 1; i++) {
             storage[i] = storage[i + 1];
         }
-        storage[size - 1] = null;
     }
 }

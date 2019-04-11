@@ -25,7 +25,6 @@ public class ArrayStorage extends AbsractArrayStorage {
     @Override
     protected void swap(int index) {
         storage[index] = storage[size - 1];
-        storage[size - 1] = null;
     }
 }
 

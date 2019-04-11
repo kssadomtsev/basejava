@@ -56,6 +56,7 @@ public abstract class AbsractArrayStorage implements Storage {
         int index = getIndex(uuid);
         if (index >= 0) {
             swap(index);
+            storage[size - 1] = null;
             size--;
         } else {
             System.out.println("Resume with UUID " + uuid + " is not present");
