@@ -14,14 +14,14 @@ public class SortedArrayStorage extends AbsractArrayStorage {
     }
 
     @Override
-    protected void insert(Resume resume) {
-        int pos = Math.abs(getIndex(resume.getUuid()) + 1);
+    protected void insert(Resume resume, int index) {
+        int pos = Math.abs(index + 1);
         System.arraycopy(storage, pos, storage, pos + 1, size - pos);
         storage[pos] = resume;
     }
 
     @Override
-    protected void swap(int pos) {
-        System.arraycopy(storage, pos + 1, storage, pos, size - pos);
+    protected void swap(int index) {
+        System.arraycopy(storage, index + 1, storage, index, size - index -1);
     }
 }

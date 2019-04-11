@@ -17,9 +17,9 @@ public abstract class AbsractArrayStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        int pos = getIndex(resume.getUuid());
-        if (pos >= 0) {
-            storage[pos] = resume;
+        int index = getIndex(resume.getUuid());
+        if (index >= 0) {
+            storage[index] = resume;
         } else {
             System.out.println("Resume with UUID " + resume.getUuid() + " is not present");
         }
@@ -27,11 +27,12 @@ public abstract class AbsractArrayStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        if (getIndex(resume.getUuid()) >= 0) {
+        int index = getIndex(resume.getUuid());
+        if (index >= 0) {
             System.out.println("Resume with UUID " + resume.getUuid() + " already present");
         } else {
             if (size < STORAGE_LIMIT) {
-                insert(resume);
+                insert(resume, index);
                 size++;
             } else {
                 System.out.println("Storage is full!");
@@ -41,9 +42,9 @@ public abstract class AbsractArrayStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        int pos = getIndex(uuid);
-        if (pos >= 0) {
-            return storage[pos];
+        int index = getIndex(uuid);
+        if (index >= 0) {
+            return storage[index];
         } else {
             System.out.println("Resume with UUID " + uuid + " is not present");
             return null;
@@ -52,9 +53,9 @@ public abstract class AbsractArrayStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
-        int pos = getIndex(uuid);
-        if (pos >= 0) {
-            swap(pos);
+        int index = getIndex(uuid);
+        if (index >= 0) {
+            swap(index);
             size--;
         } else {
             System.out.println("Resume with UUID " + uuid + " is not present");
@@ -73,7 +74,7 @@ public abstract class AbsractArrayStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void insert(Resume resume);
+    protected abstract void insert(Resume resume, int index);
 
-    protected abstract void swap(int pos);
+    protected abstract void swap(int index);
 }

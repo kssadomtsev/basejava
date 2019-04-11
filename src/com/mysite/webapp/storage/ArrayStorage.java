@@ -18,13 +18,13 @@ public class ArrayStorage extends AbsractArrayStorage {
     }
 
     @Override
-    protected void insert(Resume resume) {
+    protected void insert(Resume resume, int index) {
         storage[size] = resume;
     }
 
     @Override
-    protected void swap(int pos) {
-        storage[pos] = storage[size - 1];
+    protected void swap(int index) {
+        storage[index] = storage[size - 1];
         storage[size - 1] = null;
     }
 }
