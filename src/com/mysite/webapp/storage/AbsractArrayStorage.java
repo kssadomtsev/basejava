@@ -1,5 +1,8 @@
 package com.mysite.webapp.storage;
 
+import com.mysite.webapp.exception.ExistStorageException;
+import com.mysite.webapp.exception.NotExistStorageException;
+import com.mysite.webapp.exception.StorageException;
 import com.mysite.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -21,7 +24,7 @@ public abstract class AbsractArrayStorage implements Storage {
         if (index >= 0) {
             storage[index] = resume;
         } else {
-            System.out.println("Resume with UUID " + resume.getUuid() + " is not present");
+            throw new NotExistStorageException(resume.getUuid());
         }
     }
 
@@ -29,13 +32,13 @@ public abstract class AbsractArrayStorage implements Storage {
     public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index >= 0) {
-            System.out.println("Resume with UUID " + resume.getUuid() + " already present");
+            throw new ExistStorageException(resume.getUuid());
         } else {
             if (size < STORAGE_LIMIT) {
                 insert(resume, index);
                 size++;
             } else {
-                System.out.println("Storage is full!");
+                throw new StorageException("Storage is full!", resume.getUuid());
             }
         }
     }
@@ -46,8 +49,7 @@ public abstract class AbsractArrayStorage implements Storage {
         if (index >= 0) {
             return storage[index];
         } else {
-            System.out.println("Resume with UUID " + uuid + " is not present");
-            return null;
+            throw new NotExistStorageException(uuid);
         }
     }
 
@@ -59,7 +61,7 @@ public abstract class AbsractArrayStorage implements Storage {
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println("Resume with UUID " + uuid + " is not present");
+            throw new NotExistStorageException(uuid);
         }
     }
 
