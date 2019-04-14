@@ -4,12 +4,10 @@ import com.mysite.webapp.exception.ExistStorageException;
 import com.mysite.webapp.exception.NotExistStorageException;
 import com.mysite.webapp.exception.StorageException;
 import com.mysite.webapp.model.Resume;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public abstract class AbsractArrayStorageTest {
     private Storage storage;
@@ -76,7 +74,7 @@ public abstract class AbsractArrayStorageTest {
             }
 
         } catch (StorageException e) {
-            Assert.fail();
+            fail();
         }
         storage.save(new Resume());
     }
