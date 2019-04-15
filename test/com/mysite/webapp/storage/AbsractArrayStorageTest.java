@@ -24,7 +24,7 @@ public abstract class AbsractArrayStorageTest {
     private static final Resume RESUME_4 = new Resume(UUID_4);
     private static final Resume RESUME_DUMMY = new Resume(UUID_DUMMY);
 
-    AbsractArrayStorageTest(Storage storage) {
+    protected AbsractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
 
