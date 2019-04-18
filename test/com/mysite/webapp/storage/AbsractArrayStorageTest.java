@@ -18,11 +18,19 @@ public abstract class AbsractArrayStorageTest {
     private static final String UUID_4 = "uuid4";
     private static final String UUID_DUMMY = "dummy";
 
-    private static final Resume RESUME_1 = new Resume(UUID_1);
-    private static final Resume RESUME_2 = new Resume(UUID_2);
-    private static final Resume RESUME_3 = new Resume(UUID_3);
-    private static final Resume RESUME_4 = new Resume(UUID_4);
-    private static final Resume RESUME_DUMMY = new Resume(UUID_DUMMY);
+    private static final Resume RESUME_1;
+    private static final Resume RESUME_2;
+    private static final Resume RESUME_3;
+    private static final Resume RESUME_4;
+    private static final Resume RESUME_DUMMY;
+
+    static {
+        RESUME_1 = new Resume(UUID_1);
+        RESUME_2 = new Resume(UUID_2);
+        RESUME_3 = new Resume(UUID_3);
+        RESUME_4 = new Resume(UUID_4);
+        RESUME_DUMMY = new Resume(UUID_DUMMY);
+    }
 
     protected AbsractArrayStorageTest(Storage storage) {
         this.storage = storage;
