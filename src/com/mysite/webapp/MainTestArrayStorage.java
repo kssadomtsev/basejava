@@ -1,14 +1,15 @@
 package com.mysite.webapp;
 
+import com.mysite.webapp.exception.NotExistStorageException;
 import com.mysite.webapp.model.Resume;
-import com.mysite.webapp.storage.SortedArrayStorage;
+import com.mysite.webapp.storage.ListStorage;
 import com.mysite.webapp.storage.Storage;
 
 /**
  * Test for your com.mysite.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
+    private final static Storage ARRAY_STORAGE = new ListStorage();
 
     public static void main(String[] args) {
         final Resume r1 = new Resume("uuid1");
@@ -26,19 +27,38 @@ public class MainTestArrayStorage {
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
-        System.out.println("Get r5: " + ARRAY_STORAGE.get(r5.getUuid()));
+        try {
+            System.out.println("Get r5: " + ARRAY_STORAGE.get(r5.getUuid()));
+        } catch (NotExistStorageException e) {
+            System.out.println(e);
+        }
 
-
-        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
-        System.out.println("Size: " + ARRAY_STORAGE.size());
-
+        try {
+            System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+        } catch (NotExistStorageException e) {
+            System.out.println(e);
+        }
 
         printAll();
         ARRAY_STORAGE.delete(r1.getUuid());
         ARRAY_STORAGE.delete(r4.getUuid());
-        ARRAY_STORAGE.delete(r5.getUuid());
+
+        try {
+            ARRAY_STORAGE.delete(r5.getUuid());
+        } catch (NotExistStorageException e) {
+            System.out.println(e);
+        }
+
+
         ARRAY_STORAGE.update(r2);
-        ARRAY_STORAGE.update(r5);
+
+        try {
+            ARRAY_STORAGE.update(r5);
+        } catch (NotExistStorageException e) {
+            System.out.println("Not found elemenet " + e);
+        }
+
+
         printAll();
         ARRAY_STORAGE.clear();
         printAll();
