@@ -55,7 +55,7 @@ public class MainTestArrayStorage {
         try {
             ARRAY_STORAGE.update(r5);
         } catch (NotExistStorageException e) {
-            System.out.println("Not found elemenet " + e);
+            System.out.println(e);
         }
 
 

@@ -7,22 +7,22 @@ import com.mysite.webapp.model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     @Override
-    public void update(Resume resume){
+    public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index >= 0) {
-            updateHelper(resume, index);
+            updatePerformed(resume, index);
         } else {
             throw new NotExistStorageException(resume.getUuid());
         }
     }
 
     @Override
-    public void save(Resume resume){
+    public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index >= 0) {
             throw new ExistStorageException(resume.getUuid());
-        } else{
-            saveHelper(resume, index);
+        } else {
+            savePerformed(resume, index);
         }
     }
 
@@ -30,17 +30,17 @@ public abstract class AbstractStorage implements Storage {
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
-            return getHelper(index);
+            return getPerformed(index);
         } else {
             throw new NotExistStorageException(uuid);
         }
     }
 
     @Override
-    public void delete(String uuid){
+    public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
-            deleteHelper(index);
+            deletePerformed(index);
         } else {
             throw new NotExistStorageException(uuid);
         }
@@ -48,11 +48,11 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void updateHelper(Resume resume, int index);
+    protected abstract void updatePerformed(Resume resume, int index);
 
-    protected abstract void saveHelper(Resume resume, int index);
+    protected abstract void savePerformed(Resume resume, int index);
 
-    protected abstract Resume getHelper(int index);
+    protected abstract Resume getPerformed(int index);
 
-    protected abstract void deleteHelper(int index);
+    protected abstract void deletePerformed(int index);
 }

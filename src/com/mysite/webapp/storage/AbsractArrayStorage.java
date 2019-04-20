@@ -30,12 +30,12 @@ public abstract class AbsractArrayStorage extends AbstractStorage {
     protected abstract int getIndex(String uuid);
 
     @Override
-    protected void updateHelper(Resume resume, int index) {
+    protected void updatePerformed(Resume resume, int index) {
         storage[index] = resume;
     }
 
     @Override
-    protected void saveHelper(Resume resume, int index) {
+    protected void savePerformed(Resume resume, int index) {
         if (size < STORAGE_LIMIT) {
             insert(resume, index);
             size++;
@@ -45,18 +45,18 @@ public abstract class AbsractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getHelper(int index) {
+    protected Resume getPerformed(int index) {
         return storage[index];
     }
 
     @Override
-    protected void deleteHelper(int index) {
-        swap(index);
+    protected void deletePerformed(int index) {
+        remove(index);
         storage[size - 1] = null;
         size--;
     }
 
     protected abstract void insert(Resume resume, int index);
 
-    protected abstract void swap(int index);
+    protected abstract void remove(int index);
 }

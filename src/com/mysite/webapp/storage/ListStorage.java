@@ -3,9 +3,10 @@ package com.mysite.webapp.storage;
 import com.mysite.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    protected ArrayList<Resume> storage = new ArrayList<>();
+    protected List<Resume> storage = new ArrayList<>();
 
     @Override
     public void clear() {
@@ -24,26 +25,31 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected int getIndex(String uuid) {
-        return storage.indexOf(new Resume(uuid));
+        for (int i = 0; i < storage.size(); i++) {
+            if (storage.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
-    protected void updateHelper(Resume resume, int index) {
+    protected void updatePerformed(Resume resume, int index) {
         storage.set(index, resume);
     }
 
     @Override
-    protected void saveHelper(Resume resume, int index) {
+    protected void savePerformed(Resume resume, int index) {
         storage.add(resume);
     }
 
     @Override
-    protected Resume getHelper(int index) {
+    protected Resume getPerformed(int index) {
         return storage.get(index);
     }
 
     @Override
-    protected void deleteHelper(int index) {
+    protected void deletePerformed(int index) {
         storage.remove(index);
     }
 }

@@ -20,7 +20,7 @@ public class SortedArrayStorage extends AbsractArrayStorage {
     }
 
     @Override
-    protected void swap(int index) {
+    protected void remove(int index) {
         for (int i = index; i < size - 1; i++) {
             storage[i] = storage[i + 1];
         }
