@@ -8,8 +8,8 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index >= 0) {
+        Object index = getIndex(resume.getUuid());
+        if (isPresent(index)) {
             updatePerformed(resume, index);
         } else {
             throw new NotExistStorageException(resume.getUuid());
@@ -18,8 +18,8 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index >= 0) {
+        Object index = getIndex(resume.getUuid());
+        if (isPresent(index)) {
             throw new ExistStorageException(resume.getUuid());
         } else {
             savePerformed(resume, index);
@@ -28,8 +28,8 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index >= 0) {
+        Object index = getIndex(uuid);
+        if (isPresent(index)) {
             return getPerformed(index);
         } else {
             throw new NotExistStorageException(uuid);
@@ -38,21 +38,23 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index >= 0) {
+        Object index = getIndex(uuid);
+        if (isPresent(index)) {
             deletePerformed(index);
         } else {
             throw new NotExistStorageException(uuid);
         }
     }
 
-    protected abstract int getIndex(String uuid);
+    protected abstract Object getIndex(String uuid);
 
-    protected abstract void updatePerformed(Resume resume, int index);
+    protected abstract void updatePerformed(Resume resume, Object index);
 
-    protected abstract void savePerformed(Resume resume, int index);
+    protected abstract void savePerformed(Resume resume, Object index);
 
-    protected abstract Resume getPerformed(int index);
+    protected abstract Resume getPerformed(Object index);
 
-    protected abstract void deletePerformed(int index);
+    protected abstract void deletePerformed(Object index);
+
+    protected abstract boolean isPresent(Object index);
 }

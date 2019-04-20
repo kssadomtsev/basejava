@@ -2,11 +2,12 @@ package com.mysite.webapp.storage;
 
 import com.mysite.webapp.model.Resume;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ListStorage extends AbstractStorage {
-    protected List<Resume> storage = new ArrayList<>();
+public class MapStorage extends AbstractStorage {
+    protected Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public void clear() {
@@ -15,7 +16,9 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        return storage.toArray(new Resume[storage.size()]);
+        Resume[] result = storage.values().toArray(new Resume[storage.size()]);
+        Arrays.sort(result);
+        return result;
     }
 
     @Override
@@ -24,38 +27,33 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Integer getIndex(String uuid) {
-        for (int i = 0; i < storage.size(); i++) {
-            if (storage.get(i).getUuid().equals(uuid)) {
-                return i;
-            }
-        }
-        return -1;
+    protected String getIndex(String uuid) {
+        return uuid;
     }
 
     @Override
     protected void updatePerformed(Resume resume, Object index) {
-        storage.set((Integer) index, resume);
+        storage.put((String) index, resume);
     }
 
     @Override
     protected void savePerformed(Resume resume, Object index) {
-        storage.add(resume);
+        storage.put((String) index, resume);
     }
 
     @Override
     protected Resume getPerformed(Object index) {
-        return storage.get((Integer) index);
+        return storage.get(index);
     }
 
     @Override
     protected void deletePerformed(Object index) {
-        int index1 = (Integer) index;
-        storage.remove(index1);
+        storage.remove(index);
     }
 
     @Override
     protected boolean isPresent(Object index) {
-        return (Integer) index >= 0;
+        return storage.containsKey(index);
     }
+
 }

@@ -27,17 +27,17 @@ public abstract class AbsractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected abstract int getIndex(String uuid);
+    protected abstract Integer getIndex(String uuid);
 
     @Override
-    protected void updatePerformed(Resume resume, int index) {
-        storage[index] = resume;
+    protected void updatePerformed(Resume resume, Object index) {
+        storage[(Integer) index] = resume;
     }
 
     @Override
-    protected void savePerformed(Resume resume, int index) {
+    protected void savePerformed(Resume resume, Object index) {
         if (size < STORAGE_LIMIT) {
-            insert(resume, index);
+            insert(resume, (Integer) index);
             size++;
         } else {
             throw new StorageException("Storage is full!", resume.getUuid());
@@ -45,15 +45,20 @@ public abstract class AbsractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getPerformed(int index) {
-        return storage[index];
+    protected Resume getPerformed(Object index) {
+        return storage[(Integer) index];
     }
 
     @Override
-    protected void deletePerformed(int index) {
-        remove(index);
+    protected void deletePerformed(Object index) {
+        remove((Integer) index);
         storage[size - 1] = null;
         size--;
+    }
+
+    @Override
+    protected boolean isPresent(Object index) {
+        return (Integer) index >= 0;
     }
 
     protected abstract void insert(Resume resume, int index);
