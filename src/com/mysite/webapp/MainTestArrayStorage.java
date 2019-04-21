@@ -2,14 +2,14 @@ package com.mysite.webapp;
 
 import com.mysite.webapp.exception.NotExistStorageException;
 import com.mysite.webapp.model.Resume;
-import com.mysite.webapp.storage.MapStorage;
+import com.mysite.webapp.storage.ListStorage;
 import com.mysite.webapp.storage.Storage;
 
 /**
  * Test for your com.mysite.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private final static Storage ARRAY_STORAGE = new MapStorage();
+    private final static Storage ARRAY_STORAGE = new ListStorage();
 
     public static void main(String[] args) {
         final Resume r1 = new Resume("uuid1");
