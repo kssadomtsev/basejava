@@ -2,11 +2,9 @@ package com.mysite.webapp.storage;
 
 import com.mysite.webapp.model.Resume;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class MapStorage extends AbstractStorage {
+public abstract class MapStorage extends AbstractStorage {
     protected Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -15,45 +13,14 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        Resume[] result = storage.values().toArray(new Resume[storage.size()]);
-        Arrays.sort(result);
-        return result;
+    public List<Resume> getAllSorted() {
+        List<Resume> resumes = new ArrayList<>(Arrays.asList(storage.values().toArray(new Resume[storage.size()])));
+        Collections.sort(resumes);
+        return resumes;
     }
 
     @Override
     public int size() {
         return storage.size();
     }
-
-    @Override
-    protected String getIndex(String uuid) {
-        return uuid;
-    }
-
-    @Override
-    protected void updatePerformed(Resume resume, Object index) {
-        storage.put((String) index, resume);
-    }
-
-    @Override
-    protected void savePerformed(Resume resume, Object index) {
-        storage.put((String) index, resume);
-    }
-
-    @Override
-    protected Resume getPerformed(Object index) {
-        return storage.get(index);
-    }
-
-    @Override
-    protected void deletePerformed(Object index) {
-        storage.remove(index);
-    }
-
-    @Override
-    protected boolean isPresent(Object index) {
-        return storage.containsKey(index);
-    }
-
 }
