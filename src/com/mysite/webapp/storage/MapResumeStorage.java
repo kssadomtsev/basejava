@@ -30,7 +30,7 @@ public class MapResumeStorage extends MapStorage {
     }
 
     @Override
-    protected boolean isPresent(Object r) {
-        return r != null;
+    protected boolean isPresent(Object resume) {
+        return resume != null;
     }
 }
