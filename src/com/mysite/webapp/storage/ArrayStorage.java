@@ -10,10 +10,10 @@ import java.util.List;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage extends AbsractArrayStorage {
+public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected Integer getIndex(String uuid) {
+    protected Integer getPos(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
                 return i;
@@ -33,8 +33,8 @@ public class ArrayStorage extends AbsractArrayStorage {
     }
 
     @Override
-    protected List<Resume> getSortedList(Resume[] resumes_as_array){
-        List<Resume> resumes = new ArrayList<>(Arrays.asList(resumes_as_array));
+    protected List<Resume> getSortedList(Resume[] resumesAsArray){
+        List<Resume> resumes = new ArrayList<>(Arrays.asList(resumesAsArray));
         Collections.sort(resumes);
         return resumes;
     }

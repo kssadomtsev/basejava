@@ -4,7 +4,7 @@ import com.mysite.webapp.model.Resume;
 
 import java.util.*;
 
-public class SortedArrayStorage extends AbsractArrayStorage {
+public class SortedArrayStorage extends AbstractArrayStorage {
 
     /*    private static class ResumeComparator implements Comparator<Resume> {
             @Override
@@ -12,10 +12,10 @@ public class SortedArrayStorage extends AbsractArrayStorage {
                 return o1.getUuid().compareTo(o2.getUuid());
             }
         } */
-    private static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
+    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 
     @Override
-    protected Integer getIndex(String uuid) {
+    protected Integer getPos(String uuid) {
         Resume searchKey = new Resume(uuid, "Something");
         return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
     }
@@ -33,8 +33,8 @@ public class SortedArrayStorage extends AbsractArrayStorage {
     }
 
     @Override
-    protected List<Resume> getSortedList(Resume[] resumes_as_array) {
-        List<Resume> resumes = new ArrayList<>(Arrays.asList(resumes_as_array));
+    protected List<Resume> getSortedList(Resume[] resumesAsArray) {
+        List<Resume> resumes = new ArrayList<>(Arrays.asList(resumesAsArray));
         return resumes;
     }
 }

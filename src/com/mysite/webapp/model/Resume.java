@@ -45,22 +45,18 @@ public class Resume implements Comparable<Resume> {
         if (this == o) return true;
         if (!(o instanceof Resume)) return false;
         Resume resume = (Resume) o;
-        return getUuid().equals(resume.getUuid()) &&
-                getFullName().equals(resume.getFullName());
+        return uuid.equals(resume.uuid) &&
+                fullName.equals(resume.fullName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUuid(), getFullName());
+        return Objects.hash(uuid, fullName);
     }
 
     @Override
     public int compareTo(Resume o) {
-        int res = fullName.compareTo(o.fullName);
-        if (res != 0) {
-            return res;
-        } else {
-            return uuid.compareTo(o.uuid);
-        }
+        final int res = fullName.compareTo(o.fullName);
+        return res != 0 ? res : uuid.compareTo(o.uuid);
     }
 }

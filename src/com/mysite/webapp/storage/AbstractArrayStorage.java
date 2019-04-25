@@ -6,7 +6,7 @@ import com.mysite.webapp.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbsractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10_000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -19,9 +19,9 @@ public abstract class AbsractArrayStorage extends AbstractStorage {
 
     @Override
     public List<Resume> getAllSorted() {
-        Resume[] resumes_as_array = new Resume[size];
-        System.arraycopy(storage, 0, resumes_as_array, 0, size);
-        return getSortedList(resumes_as_array);
+        Resume[] resumesAsArray = new Resume[size];
+        System.arraycopy(storage, 0, resumesAsArray, 0, size);
+        return getSortedList(resumesAsArray);
     }
 
     @Override
@@ -30,17 +30,17 @@ public abstract class AbsractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected abstract Integer getIndex(String uuid);
+    protected abstract Integer getPos(String uuid);
 
     @Override
-    protected void updatePerformed(Resume resume, Object index) {
-        storage[(Integer) index] = resume;
+    protected void updatePerformed(Resume resume, Object pos) {
+        storage[(Integer) pos] = resume;
     }
 
     @Override
-    protected void savePerformed(Resume resume, Object index) {
+    protected void savePerformed(Resume resume, Object pos) {
         if (size < STORAGE_LIMIT) {
-            insert(resume, (Integer) index);
+            insert(resume, (Integer) pos);
             size++;
         } else {
             throw new StorageException("Storage is full!", resume.getUuid());
@@ -48,25 +48,25 @@ public abstract class AbsractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getPerformed(Object index) {
-        return storage[(Integer) index];
+    protected Resume getPerformed(Object pos) {
+        return storage[(Integer) pos];
     }
 
     @Override
-    protected void deletePerformed(Object index) {
-        remove((Integer) index);
+    protected void deletePerformed(Object pos) {
+        remove((Integer) pos);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected boolean isPresent(Object index) {
-        return (Integer) index >= 0;
+    protected boolean isPresent(Object pos) {
+        return (Integer) pos >= 0;
     }
 
     protected abstract void insert(Resume resume, int index);
 
     protected abstract void remove(int index);
 
-    protected abstract List<Resume> getSortedList(Resume[] resumes_as_array);
+    protected abstract List<Resume> getSortedList(Resume[] resumesAsArray);
 }

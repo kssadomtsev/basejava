@@ -4,7 +4,7 @@ import com.mysite.webapp.model.Resume;
 
 import java.util.*;
 
-public abstract class MapStorage extends AbstractStorage {
+public abstract class AbstractMapStorage extends AbstractStorage {
     protected Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -14,9 +14,10 @@ public abstract class MapStorage extends AbstractStorage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> resumes = new ArrayList<>(Arrays.asList(storage.values().toArray(new Resume[storage.size()])));
-        Collections.sort(resumes);
-        return resumes;
+        Collection<Resume> storageValues = storage.values();
+        ArrayList<Resume> listOfValues = new ArrayList<>(storageValues);
+        Collections.sort(listOfValues);
+        return listOfValues;
     }
 
     @Override

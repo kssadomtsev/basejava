@@ -8,53 +8,54 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        Object index = getIndex(resume.getUuid());
-        if (isPresent(index)) {
-            updatePerformed(resume, index);
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
+        Object pos = getPos(resume.getUuid());
+        isElementExist(pos, resume.getUuid());
+        updatePerformed(resume, pos);
     }
 
     @Override
     public void save(Resume resume) {
-        Object index = getIndex(resume.getUuid());
-        if (isPresent(index)) {
-            throw new ExistStorageException(resume.getUuid());
-        } else {
-            savePerformed(resume, index);
-        }
+        Object pos = getPos(resume.getUuid());
+        isElementNotExist(pos, resume.getUuid());
+        savePerformed(resume, pos);
     }
 
     @Override
     public Resume get(String uuid) {
-        Object index = getIndex(uuid);
-        if (isPresent(index)) {
-            return getPerformed(index);
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
+        Object pos = getPos(uuid);
+        isElementExist(pos, uuid);
+        return getPerformed(pos);
     }
 
     @Override
     public void delete(String uuid) {
-        Object index = getIndex(uuid);
-        if (isPresent(index)) {
-            deletePerformed(index);
-        } else {
+        Object pos = getPos(uuid);
+        isElementExist(pos, uuid);
+        deletePerformed(pos);
+    }
+
+
+    public void isElementExist(Object pos, String uuid) {
+        if (!isPresent(pos)) {
             throw new NotExistStorageException(uuid);
         }
     }
 
-    protected abstract Object getIndex(String uuid);
+    public void isElementNotExist(Object pos, String uuid) {
+        if (isPresent(pos)) {
+            throw new ExistStorageException(uuid);
+        }
+    }
 
-    protected abstract void updatePerformed(Resume resume, Object index);
+    protected abstract Object getPos(String uuid);
 
-    protected abstract void savePerformed(Resume resume, Object index);
+    protected abstract void updatePerformed(Resume resume, Object pos);
 
-    protected abstract Resume getPerformed(Object index);
+    protected abstract void savePerformed(Resume resume, Object pos);
 
-    protected abstract void deletePerformed(Object index);
+    protected abstract Resume getPerformed(Object pos);
 
-    protected abstract boolean isPresent(Object index);
+    protected abstract void deletePerformed(Object pos);
+
+    protected abstract boolean isPresent(Object pos);
 }
