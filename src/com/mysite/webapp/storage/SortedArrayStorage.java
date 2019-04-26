@@ -15,20 +15,20 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 
     @Override
-    protected Integer getKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         Resume searchKey = new Resume(uuid, "Something");
         return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
     }
 
     @Override
-    protected void insert(Resume resume, int key) {
-        int pos = Math.abs(key + 1);
+    protected void insert(Resume resume, int searchKey) {
+        int pos = Math.abs(searchKey + 1);
         System.arraycopy(storage, pos, storage, pos + 1, size - pos);
         storage[pos] = resume;
     }
 
     @Override
-    protected void remove(int key) {
-        System.arraycopy(storage, key + 1, storage, key, size - key + 1);
+    protected void remove(int searchKey) {
+        System.arraycopy(storage, searchKey + 1, storage, searchKey, size - searchKey + 1);
     }
 }

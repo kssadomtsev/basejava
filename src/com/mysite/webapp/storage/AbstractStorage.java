@@ -11,26 +11,26 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
-        Object key = getElementExist(resume.getUuid());
-        doUpdate(resume, key);
+        Object searchKey = getElementExist(resume.getUuid());
+        doUpdate(resume, searchKey);
     }
 
     @Override
     public void save(Resume resume) {
-        Object key = getElementNotExist(resume.getUuid());
-        doSave(resume, key);
+        Object searchKey = getElementNotExist(resume.getUuid());
+        doSave(resume, searchKey);
     }
 
     @Override
     public Resume get(String uuid) {
-        Object key = getElementExist(uuid);
-        return doGet(key);
+        Object searchKey = getElementExist(uuid);
+        return doGet(searchKey);
     }
 
     @Override
     public void delete(String uuid) {
-        Object key = getElementExist(uuid);
-        doDelete(key);
+        Object searchKey = getElementExist(uuid);
+        doDelete(searchKey);
     }
 
     @Override
@@ -41,32 +41,32 @@ public abstract class AbstractStorage implements Storage {
     }
 
     private Object getElementExist(String uuid) {
-        Object key = getKey(uuid);
-        if (!isPresent(key)) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isPresent(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
-        return key;
+        return searchKey;
     }
 
     private Object getElementNotExist(String uuid) {
-        Object key = getKey(uuid);
-        if (isPresent(key)) {
+        Object searchKey = getSearchKey(uuid);
+        if (isPresent(searchKey)) {
             throw new ExistStorageException(uuid);
         }
-        return key;
+        return searchKey;
     }
 
-    protected abstract Object getKey(String uuid);
+    protected abstract Object getSearchKey(String uuid);
 
-    protected abstract void doUpdate(Resume resume, Object key);
+    protected abstract void doUpdate(Resume resume, Object searchKey);
 
-    protected abstract void doSave(Resume resume, Object key);
+    protected abstract void doSave(Resume resume, Object searchKey);
 
-    protected abstract Resume doGet(Object key);
+    protected abstract Resume doGet(Object searchKey);
 
-    protected abstract void doDelete(Object key);
+    protected abstract void doDelete(Object searchKey);
 
-    protected abstract boolean isPresent(Object key);
+    protected abstract boolean isPresent(Object searchKey);
 
     protected abstract List<Resume> getList();
 }

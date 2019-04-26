@@ -5,32 +5,32 @@ import com.mysite.webapp.model.Resume;
 public class MapUuidStorage extends AbstractMapStorage {
 
     @Override
-    protected String getKey(String uuid) {
+    protected String getSearchKey(String uuid) {
         return uuid;
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object key) {
-        storage.put((String) key, resume);
+    protected void doUpdate(Resume resume, Object searchKey) {
+        storage.put((String) searchKey, resume);
     }
 
     @Override
-    protected void doSave(Resume resume, Object key) {
-        storage.put((String) key, resume);
+    protected void doSave(Resume resume, Object searchKey) {
+        storage.put((String) searchKey, resume);
     }
 
     @Override
-    protected Resume doGet(Object key) {
-        return storage.get(key);
+    protected Resume doGet(Object searchKey) {
+        return storage.get(searchKey);
     }
 
     @Override
-    protected void doDelete(Object key) {
-        storage.remove(key);
+    protected void doDelete(Object searchKey) {
+        storage.remove(searchKey);
     }
 
     @Override
-    protected boolean isPresent(Object key) {
-        return storage.containsKey(key);
+    protected boolean isPresent(Object searchKey) {
+        return storage.containsKey(searchKey);
     }
 }
