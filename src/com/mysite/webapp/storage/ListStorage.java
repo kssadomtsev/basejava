@@ -3,7 +3,6 @@ package com.mysite.webapp.storage;
 import com.mysite.webapp.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
@@ -15,8 +14,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        Collections.sort(storage);
+    public List<Resume> getList() {
         return storage;
     }
 
@@ -26,7 +24,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Integer getPos(String uuid) {
+    protected Integer getKey(String uuid) {
         for (int i = 0; i < storage.size(); i++) {
             if (storage.get(i).getUuid().equals(uuid)) {
                 return i;
@@ -36,27 +34,27 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updatePerformed(Resume resume, Object pos) {
-        storage.set((Integer) pos, resume);
+    protected void doUpdate(Resume resume, Object key) {
+        storage.set((Integer) key, resume);
     }
 
     @Override
-    protected void savePerformed(Resume resume, Object pos) {
+    protected void doSave(Resume resume, Object key) {
         storage.add(resume);
     }
 
     @Override
-    protected Resume getPerformed(Object pos) {
-        return storage.get((Integer) pos);
+    protected Resume doGet(Object key) {
+        return storage.get((Integer) key);
     }
 
     @Override
-    protected void deletePerformed(Object pos) {
-        storage.remove((int) pos);
+    protected void doDelete(Object key) {
+        storage.remove((int) key);
     }
 
     @Override
-    protected boolean isPresent(Object pos) {
-        return (Integer) pos >= 0;
+    protected boolean isPresent(Object key) {
+        return (Integer) key >= 0;
     }
 }

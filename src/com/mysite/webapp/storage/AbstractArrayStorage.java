@@ -3,6 +3,7 @@ package com.mysite.webapp.storage;
 import com.mysite.webapp.exception.StorageException;
 import com.mysite.webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,29 +19,22 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        Resume[] resumesAsArray = new Resume[size];
-        System.arraycopy(storage, 0, resumesAsArray, 0, size);
-        return getSortedList(resumesAsArray);
-    }
-
-    @Override
     public int size() {
         return size;
     }
 
     @Override
-    protected abstract Integer getPos(String uuid);
+    protected abstract Integer getKey(String uuid);
 
     @Override
-    protected void updatePerformed(Resume resume, Object pos) {
-        storage[(Integer) pos] = resume;
+    protected void doUpdate(Resume resume, Object key) {
+        storage[(Integer) key] = resume;
     }
 
     @Override
-    protected void savePerformed(Resume resume, Object pos) {
+    protected void doSave(Resume resume, Object key) {
         if (size < STORAGE_LIMIT) {
-            insert(resume, (Integer) pos);
+            insert(resume, (Integer) key);
             size++;
         } else {
             throw new StorageException("Storage is full!", resume.getUuid());
@@ -48,25 +42,30 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getPerformed(Object pos) {
-        return storage[(Integer) pos];
+    protected Resume doGet(Object key) {
+        return storage[(Integer) key];
     }
 
     @Override
-    protected void deletePerformed(Object pos) {
-        remove((Integer) pos);
+    protected void doDelete(Object key) {
+        remove((Integer) key);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected boolean isPresent(Object pos) {
-        return (Integer) pos >= 0;
+    protected boolean isPresent(Object key) {
+        return (Integer) key >= 0;
     }
 
-    protected abstract void insert(Resume resume, int index);
+    @Override
+    protected List<Resume> getList() {
+        Resume[] resumesAsArray = new Resume[size];
+        System.arraycopy(storage, 0, resumesAsArray, 0, size);
+        return new ArrayList<>(Arrays.asList(resumesAsArray));
+    }
 
-    protected abstract void remove(int index);
+    protected abstract void insert(Resume resume, int key);
 
-    protected abstract List<Resume> getSortedList(Resume[] resumesAsArray);
+    protected abstract void remove(int key);
 }
