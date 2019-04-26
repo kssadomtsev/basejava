@@ -3,7 +3,6 @@ package com.mysite.webapp.storage;
 import com.mysite.webapp.exception.StorageException;
 import com.mysite.webapp.model.Resume;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -62,7 +61,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected List<Resume> getList() {
         Resume[] resumesAsArray = new Resume[size];
         System.arraycopy(storage, 0, resumesAsArray, 0, size);
-        return new ArrayList<>(Arrays.asList(resumesAsArray));
+        return Arrays.asList(resumesAsArray);
     }
 
     protected abstract void insert(Resume resume, int searchKey);
