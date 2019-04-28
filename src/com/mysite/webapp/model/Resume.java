@@ -16,6 +16,8 @@ public class Resume implements Comparable<Resume> {
     }
 
     public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(fullName, "FullName must be defined");
+        Objects.requireNonNull(uuid, "UUID must be defined");
         this.uuid = uuid;
         this.fullName = fullName;
     }

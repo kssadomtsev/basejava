@@ -6,7 +6,7 @@ import com.mysite.webapp.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10_000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -26,14 +26,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract Integer getSearchKey(String uuid);
 
     @Override
-    protected void doUpdate(Resume resume, Object searchKey) {
-        storage[(Integer) searchKey] = resume;
+    protected void doUpdate(Resume resume, Integer searchKey) {
+        storage[searchKey] = resume;
     }
 
     @Override
-    protected void doSave(Resume resume, Object searchKey) {
+    protected void doSave(Resume resume, Integer searchKey) {
         if (size < STORAGE_LIMIT) {
-            insert(resume, (Integer) searchKey);
+            insert(resume, searchKey);
             size++;
         } else {
             throw new StorageException("Storage is full!", resume.getUuid());
@@ -41,20 +41,20 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        return storage[(Integer) searchKey];
+    protected Resume doGet(Integer searchKey) {
+        return storage[searchKey];
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
-        remove((Integer) searchKey);
+    protected void doDelete(Integer searchKey) {
+        remove(searchKey);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected boolean isPresent(Object searchKey) {
-        return (Integer) searchKey >= 0;
+    protected boolean isPresent(Integer searchKey) {
+        return searchKey >= 0;
     }
 
     @Override

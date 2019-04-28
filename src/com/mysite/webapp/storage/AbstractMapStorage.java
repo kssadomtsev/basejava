@@ -4,7 +4,7 @@ import com.mysite.webapp.model.Resume;
 
 import java.util.*;
 
-public abstract class AbstractMapStorage extends AbstractStorage {
+public abstract class AbstractMapStorage<SK> extends AbstractStorage<SK> {
     protected Map<String, Resume> storage = new HashMap<>();
 
     @Override
