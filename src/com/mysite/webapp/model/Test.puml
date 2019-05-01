@@ -1,0 +1,65 @@
+@startuml
+
+abstract class Section {
+}
+
+
+class Link {
+    private final String title;
+    private final String URI;
+}
+
+enum ContactType {
+    PHONE("Телефон"),
+    SKYPE("Skype"),
+    EMAIL("Почта"),
+    LINKEDIN("Профиль LinkedIn"),
+    GITHUB("Профиль GitHub"),
+    STACKOVERFLOW("Профиль Stackoverflow"),
+    HOMEPAGE("Домашняя страница");
+
+    private String title;
+}
+
+enum SectionType {
+    PERSONAL("Личные качества"),
+    OBJECTIVE("Позиция"),
+    ACHIEVEMENT("Достижения"),
+    QUALIFICATIONS("Квалификация"),
+    EXPERIENCE("Опыт работы"),
+    EDUCATION("Образование");
+
+    private String title;
+}
+
+class Place {
+    private final Link linkPlace;
+    private final Date startDate;
+    private final Date endDate;
+    private final String title;
+    private final String description;
+    }
+
+ class PlaceList extends Section {
+        private final List<Place> placeList;
+  }
+
+  class Resume {
+      private final String uuid;
+      private String fullName;
+      private final Map<SectionType, Section> contacts;
+      private final Map<ContactType, String> sections;
+      }
+
+  class SectionList extends Section {
+      private final List<String> contentList;
+      }
+ class SectionText extends Section {
+          private final String content;
+          }
+ Resume *-- Section
+ Resume *-- SectionType
+ Resume *-- ContactType
+ PlaceList *-- Place
+ Place *-- Link
+@enduml

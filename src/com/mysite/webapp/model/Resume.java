@@ -1,5 +1,7 @@
 package com.mysite.webapp.model;
 
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -10,6 +12,8 @@ public class Resume implements Comparable<Resume> {
     // Unique identifier
     private final String uuid;
     private String fullName;
+    private final Map<SectionType, Section> contacts = new EnumMap<>(SectionType.class);
+    private final Map<ContactType, String> sections = new EnumMap<>(ContactType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
