@@ -1,16 +1,16 @@
 package com.mysite.webapp.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Place {
     private final Link linkPlace;
-    private final Date startDate;
-    private final Date endDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
     private final String title;
     private final String description;
 
-    public Place(Link linkPlace, Date startDate, Date endDate, String title, String description) {
+    public Place(Link linkPlace, LocalDate startDate, LocalDate endDate, String title, String description) {
         Objects.requireNonNull(linkPlace, "Link place must be defined");
         Objects.requireNonNull(startDate, "Start date must be defined");
         Objects.requireNonNull(endDate, "End date must be defined");

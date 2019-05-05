@@ -34,13 +34,13 @@ enum SectionType {
 
 class Place {
     private final Link linkPlace;
-    private final Date startDate;
-    private final Date endDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
     private final String title;
     private final String description;
     }
 
- class PlaceList extends Section {
+ class PlaceSection extends Section {
         private final List<Place> placeList;
   }
 
@@ -51,15 +51,15 @@ class Place {
       private final Map<ContactType, String> sections;
       }
 
-  class SectionList extends Section {
+  class ListSection extends Section {
       private final List<String> contentList;
       }
- class SectionText extends Section {
+ class TextSection extends Section {
           private final String content;
           }
  Resume *-- Section
  Resume *-- SectionType
  Resume *-- ContactType
- PlaceList *-- Place
+ PlaceSection *-- Place
  Place *-- Link
 @enduml

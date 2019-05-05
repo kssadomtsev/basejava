@@ -2,10 +2,10 @@ package com.mysite.webapp.model;
 
 import java.util.Objects;
 
-public class SectionText extends Section {
+public class TextSection extends Section {
     private final String content;
 
-    public SectionText(String content) {
+    public TextSection(String content) {
         Objects.requireNonNull(content, "Content must be defined");
         this.content = content;
     }
@@ -13,8 +13,8 @@ public class SectionText extends Section {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SectionText)) return false;
-        SectionText that = (SectionText) o;
+        if (!(o instanceof TextSection)) return false;
+        TextSection that = (TextSection) o;
         return content.equals(that.content);
     }
 
@@ -25,7 +25,7 @@ public class SectionText extends Section {
 
     @Override
     public String toString() {
-        return "SectionText{" +
+        return "TextSection{" +
                 "content='" + content + '\'' +
                 '}';
     }

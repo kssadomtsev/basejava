@@ -3,10 +3,10 @@ package com.mysite.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class SectionList extends Section {
+public class ListSection extends Section {
     private final List<String> contentList;
 
-    public SectionList(List<String> contentList) {
+    public ListSection(List<String> contentList) {
         Objects.requireNonNull(contentList, "Content list must be defined");
         this.contentList = contentList;
     }
@@ -14,8 +14,8 @@ public class SectionList extends Section {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SectionList)) return false;
-        SectionList that = (SectionList) o;
+        if (!(o instanceof ListSection)) return false;
+        ListSection that = (ListSection) o;
         return contentList.equals(that.contentList);
     }
 
@@ -26,7 +26,7 @@ public class SectionList extends Section {
 
     @Override
     public String toString() {
-        return "SectionList{" +
+        return "ListSection{" +
                 "contentList=" + contentList +
                 '}';
     }
