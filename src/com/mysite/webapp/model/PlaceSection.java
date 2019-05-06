@@ -3,7 +3,7 @@ package com.mysite.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class PlaceSection extends Section {
+public class PlaceSection extends AbstractSection {
     private final List<Place> placeList;
 
     public PlaceSection(List<Place> placeList) {

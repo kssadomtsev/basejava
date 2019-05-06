@@ -1,12 +1,11 @@
 @startuml
 
-abstract class Section {
+abstract class AbstractSection {
 }
-
 
 class Link {
     private final String title;
-    private final String URI;
+    private final String URL;
 }
 
 enum ContactType {
@@ -40,24 +39,24 @@ class Place {
     private final String description;
     }
 
- class PlaceSection extends Section {
+ class PlaceSection extends AbstractSection {
         private final List<Place> placeList;
   }
 
   class Resume {
       private final String uuid;
       private String fullName;
-      private final Map<SectionType, Section> contacts;
+      private final Map<SectionType, AbstractSection> contacts;
       private final Map<ContactType, String> sections;
       }
 
-  class ListSection extends Section {
+  class ListSection extends AbstractSection {
       private final List<String> contentList;
       }
- class TextSection extends Section {
+ class TextSection extends AbstractSection {
           private final String content;
           }
- Resume *-- Section
+ Resume *-- AbstractSection
  Resume *-- SectionType
  Resume *-- ContactType
  PlaceSection *-- Place
