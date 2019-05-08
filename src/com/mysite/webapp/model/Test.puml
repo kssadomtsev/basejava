@@ -31,16 +31,16 @@ enum SectionType {
     private String title;
 }
 
-class Place {
-    private final Link linkPlace;
+class Organization {
+    private final Link linkOrganization;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final String title;
     private final String description;
     }
 
- class PlaceSection extends AbstractSection {
-        private final List<Place> placeList;
+ class OrganizationSection extends AbstractSection {
+        private final List<Organization> organizationList;
   }
 
   class Resume {
@@ -59,6 +59,6 @@ class Place {
  Resume *-- AbstractSection
  Resume *-- SectionType
  Resume *-- ContactType
- PlaceSection *-- Place
- Place *-- Link
+ OrganizationSection *-- Organization
+ Organization *-- Link
 @enduml
