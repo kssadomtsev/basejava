@@ -33,11 +33,15 @@ enum SectionType {
 
 class Organization {
     private final Link linkOrganization;
+    private final List<Position> positionList;
+    }
+
+class Position {
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final String title;
     private final String description;
-    }
+}
 
  class OrganizationSection extends AbstractSection {
         private final List<Organization> organizationList;
@@ -61,4 +65,5 @@ class Organization {
  Resume *-- ContactType
  OrganizationSection *-- Organization
  Organization *-- Link
+ Organization *-- Position
 @enduml
