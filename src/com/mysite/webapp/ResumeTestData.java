@@ -7,85 +7,29 @@ import java.util.Arrays;
 import java.time.LocalDate;
 
 public class ResumeTestData {
-
-    public static final Resume RESUME_1 = new Resume("uuid1", "User1");
-    public static final Resume RESUME_2 = new Resume("uuid2", "User2");
-    public static final Resume RESUME_3 = new Resume("uuid3", "User3");
-    public static final Resume RESUME_4 = new Resume("uuid4", "User4");
+    
     private static final LocalDate today = java.time.LocalDate.now();
 
-    static {
-        RESUME_1.setContact(ContactType.PHONE, "111");
-        RESUME_1.setContact(ContactType.SKYPE, "@test1");
-        RESUME_1.setContact(ContactType.EMAIL, "test1@test.ru");
-        RESUME_1.setContact(ContactType.LINKEDIN, "https://www.linkedin.com/test1");
-        RESUME_1.setContact(ContactType.GITHUB, "https://github.com/test1");
-        RESUME_1.setContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/test1");
-        RESUME_1.setContact(ContactType.HOMEPAGE, "http://test1.ru/");
-        RESUME_1.setSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
-        RESUME_1.setSection(SectionType.PERSONAL, new TextSection("Personal1"));
-        RESUME_1.setSection(SectionType.ACHIEVEMENT, new ListSection(Arrays.asList("A1", "A2", "A3")));
-        RESUME_1.setSection(SectionType.QUALIFICATIONS, new ListSection(Arrays.asList("Q1", "Q2", "Q3")));
-        RESUME_1.setSection(SectionType.EXPERIENCE, new OrganizationSection(Arrays.asList(
+    public static Resume fillResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
+        resume.setContact(ContactType.PHONE, "111");
+        resume.setContact(ContactType.SKYPE, "@test1");
+        resume.setContact(ContactType.EMAIL, "test1@test.ru");
+        resume.setContact(ContactType.LINKEDIN, "https://www.linkedin.com/test1");
+        resume.setContact(ContactType.GITHUB, "https://github.com/test1");
+        resume.setContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/test1");
+        resume.setContact(ContactType.HOMEPAGE, "http://test1.ru/");
+        resume.setSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
+        resume.setSection(SectionType.PERSONAL, new TextSection("Personal1"));
+        resume.setSection(SectionType.ACHIEVEMENT, new ListSection(Arrays.asList("A1", "A2", "A3")));
+        resume.setSection(SectionType.QUALIFICATIONS, new ListSection(Arrays.asList("Q1", "Q2", "Q3")));
+        resume.setSection(SectionType.EXPERIENCE, new OrganizationSection(Arrays.asList(
                 new Organization(new Link("Organization1", "http://organization1.ru/"),
                         Arrays.asList(new Position(java.time.LocalDate.of(2013, 10, 1), today, "Specialist", "Some work things"))))));
-        RESUME_1.setSection(SectionType.EDUCATION, new OrganizationSection(Arrays.asList(
+        resume.setSection(SectionType.EDUCATION, new OrganizationSection(Arrays.asList(
                 new Organization(new Link("School1", "http://school11.ru/"),
                         Arrays.asList(new Position(java.time.LocalDate.of(2010, 10, 1), java.time.LocalDate.of(2013, 10, 1), "Student", "Learning"))))));
-
-        RESUME_2.setContact(ContactType.PHONE, "112");
-        RESUME_2.setContact(ContactType.SKYPE, "@test2");
-        RESUME_2.setContact(ContactType.EMAIL, "test2@test.ru");
-        RESUME_2.setContact(ContactType.LINKEDIN, "https://www.linkedin.com/test2");
-        RESUME_2.setContact(ContactType.GITHUB, "https://github.com/test2");
-        RESUME_2.setContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/test2");
-        RESUME_2.setContact(ContactType.HOMEPAGE, "http://test2.ru/");
-        RESUME_2.setSection(SectionType.OBJECTIVE, new TextSection("Objective2"));
-        RESUME_2.setSection(SectionType.PERSONAL, new TextSection("Personal2"));
-        RESUME_2.setSection(SectionType.ACHIEVEMENT, new ListSection(Arrays.asList("A1", "A2", "A3")));
-        RESUME_2.setSection(SectionType.QUALIFICATIONS, new ListSection(Arrays.asList("Q1", "Q2", "Q3")));
-        RESUME_2.setSection(SectionType.EXPERIENCE, new OrganizationSection(Arrays.asList(
-                new Organization(new Link("Organization2", "http://organization2.ru/"),
-                        Arrays.asList(new Position(java.time.LocalDate.of(2013, 10, 1), today, "Specialist", "Some work things"))))));
-        RESUME_2.setSection(SectionType.EDUCATION, new OrganizationSection(Arrays.asList(
-                new Organization(new Link("School2", "http://school12.ru/"),
-                        Arrays.asList(new Position(java.time.LocalDate.of(2010, 10, 1), java.time.LocalDate.of(2013, 10, 1), "Student", "Learning"))))));
-
-        RESUME_3.setContact(ContactType.PHONE, "113");
-        RESUME_3.setContact(ContactType.SKYPE, "@test3");
-        RESUME_3.setContact(ContactType.EMAIL, "test3@test.ru");
-        RESUME_3.setContact(ContactType.LINKEDIN, "https://www.linkedin.com/test3");
-        RESUME_3.setContact(ContactType.GITHUB, "https://github.com/test3");
-        RESUME_3.setContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/test3");
-        RESUME_3.setContact(ContactType.HOMEPAGE, "http://test3.ru/");
-        RESUME_3.setSection(SectionType.OBJECTIVE, new TextSection("Objective3"));
-        RESUME_3.setSection(SectionType.PERSONAL, new TextSection("Personal3"));
-        RESUME_3.setSection(SectionType.ACHIEVEMENT, new ListSection(Arrays.asList("A1", "A2", "A3")));
-        RESUME_3.setSection(SectionType.QUALIFICATIONS, new ListSection(Arrays.asList("Q1", "Q2", "Q3")));
-        RESUME_3.setSection(SectionType.EXPERIENCE, new OrganizationSection(Arrays.asList(
-                new Organization(new Link("Organization3", "http://organization3.ru/"),
-                        Arrays.asList(new Position(java.time.LocalDate.of(2013, 10, 1), today, "Specialist", "Some work things"))))));
-        RESUME_3.setSection(SectionType.EDUCATION, new OrganizationSection(Arrays.asList(
-                new Organization(new Link("School3", "http://school13.ru/"),
-                        Arrays.asList(new Position(java.time.LocalDate.of(2010, 10, 1), java.time.LocalDate.of(2013, 10, 1), "Student", "Learning"))))));
-
-        RESUME_4.setContact(ContactType.PHONE, "114");
-        RESUME_4.setContact(ContactType.SKYPE, "@test4");
-        RESUME_4.setContact(ContactType.EMAIL, "test4@test.ru");
-        RESUME_4.setContact(ContactType.LINKEDIN, "https://www.linkedin.com/test4");
-        RESUME_4.setContact(ContactType.GITHUB, "https://github.com/test4");
-        RESUME_4.setContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/test4");
-        RESUME_4.setContact(ContactType.HOMEPAGE, "http://test4.ru/");
-        RESUME_4.setSection(SectionType.OBJECTIVE, new TextSection("Objective4"));
-        RESUME_4.setSection(SectionType.PERSONAL, new TextSection("Personal4"));
-        RESUME_4.setSection(SectionType.ACHIEVEMENT, new ListSection(Arrays.asList("A1", "A2", "A3")));
-        RESUME_4.setSection(SectionType.QUALIFICATIONS, new ListSection(Arrays.asList("Q1", "Q2", "Q3")));
-        RESUME_4.setSection(SectionType.EXPERIENCE, new OrganizationSection(Arrays.asList(
-                new Organization(new Link("Organization4", "http://organization4.ru/"),
-                        Arrays.asList(new Position(java.time.LocalDate.of(2013, 10, 1), today, "Specialist", "Some work things"))))));
-        RESUME_4.setSection(SectionType.EDUCATION, new OrganizationSection(Arrays.asList(
-                new Organization(new Link("School4", "http://school14.ru/"),
-                        Arrays.asList(new Position(java.time.LocalDate.of(2010, 10, 1), java.time.LocalDate.of(2013, 10, 1), "Student", "Learning"))))));
+        return resume;
     }
 
     public static void main(String[] args) {
@@ -137,18 +81,6 @@ public class ResumeTestData {
         System.out.println(r1);
         printContacts(r1);
         printSections(r1);
-        System.out.println(RESUME_1);
-        printContacts(RESUME_1);
-        printSections(RESUME_1);
-        System.out.println(RESUME_2);
-        printContacts(RESUME_2);
-        printSections(RESUME_2);
-        System.out.println(RESUME_3);
-        printContacts(RESUME_3);
-        printSections(RESUME_3);
-        System.out.println(RESUME_4);
-        printContacts(RESUME_4);
-        printSections(RESUME_4);
     }
 
     static void printContacts(Resume resume) {
