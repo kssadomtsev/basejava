@@ -140,6 +140,15 @@ public class ResumeTestData {
         System.out.println(RESUME_1);
         printContacts(RESUME_1);
         printSections(RESUME_1);
+        System.out.println(RESUME_2);
+        printContacts(RESUME_2);
+        printSections(RESUME_2);
+        System.out.println(RESUME_3);
+        printContacts(RESUME_3);
+        printSections(RESUME_3);
+        System.out.println(RESUME_4);
+        printContacts(RESUME_4);
+        printSections(RESUME_4);
     }
 
     static void printContacts(Resume resume) {
