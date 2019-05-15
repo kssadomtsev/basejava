@@ -1,5 +1,6 @@
 package com.mysite.webapp.storage;
 
+import com.mysite.webapp.ResumeTestData;
 import com.mysite.webapp.exception.ExistStorageException;
 import com.mysite.webapp.exception.NotExistStorageException;
 import com.mysite.webapp.model.Resume;
@@ -17,8 +18,6 @@ public abstract class AbstractStorageTest {
     protected Storage storage;
 
     private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
     private static final String DUMMY = "dummy";
 
@@ -29,10 +28,10 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_DUMMY;
 
     static {
-        RESUME_1 = new Resume(UUID_1, "name1");
-        RESUME_2 = new Resume(UUID_2, "name2");
-        RESUME_3 = new Resume(UUID_3, "name3");
-        RESUME_4 = new Resume(UUID_4, "name4");
+        RESUME_1 = ResumeTestData.RESUME_1;
+        RESUME_2 = ResumeTestData.RESUME_2;
+        RESUME_3 = ResumeTestData.RESUME_3;
+        RESUME_4 = ResumeTestData.RESUME_4;
         RESUME_DUMMY = new Resume(DUMMY);
     }
 
