@@ -15,7 +15,7 @@ public class MainFile {
             throw new RuntimeException("Error", e);
         }
         File dir = new File("./src/com/mysite/webapp");
-        readCatalog(dir);
+        readCatalog(dir, "");
 /*      File dir = new File("./src/com/mysite/webapp");
         System.out.println(dir.isDirectory());
         String[] list = dir.list();
@@ -32,14 +32,15 @@ public class MainFile {
         }
     }
 
-    private static void readCatalog(File folder) {
+    private static void readCatalog(File folder, String offset) {
         File[] list = folder.listFiles();
         if (list != null) {
             for (File file : list) {
                 if (file.isDirectory()) {
-                    readCatalog(file);
+                    System.out.println(offset +"\u2580 " + file.getName());;
+                    readCatalog(file, offset +"  ");
                 } else {
-                    System.out.println(file.getName());
+                    System.out.println(offset + "\u255A" + file.getName());
                 }
             }
         }

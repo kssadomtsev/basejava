@@ -25,10 +25,10 @@ public class ResumeTestData {
         resume.setSection(SectionType.QUALIFICATIONS, new ListSection(Arrays.asList("Q1", "Q2", "Q3")));
         resume.setSection(SectionType.EXPERIENCE, new OrganizationSection(Arrays.asList(
                 new Organization(new Link("Organization1", "http://organization1.ru/"),
-                        Arrays.asList(new Position(java.time.LocalDate.of(2013, 10, 1), today, "Specialist", "Some work things"))))));
+                        Arrays.asList(new Organization.Position(java.time.LocalDate.of(2013, 10, 1), today, "Specialist", "Some work things"))))));
         resume.setSection(SectionType.EDUCATION, new OrganizationSection(Arrays.asList(
                 new Organization(new Link("School1", "http://school11.ru/"),
-                        Arrays.asList(new Position(java.time.LocalDate.of(2010, 10, 1), java.time.LocalDate.of(2013, 10, 1), "Student", "Learning"))))));
+                        Arrays.asList(new Organization.Position(java.time.LocalDate.of(2010, 10, 1), java.time.LocalDate.of(2013, 10, 1), "Student", "Learning"))))));
         return resume;
     }
 
@@ -58,8 +58,8 @@ public class ResumeTestData {
                 "Родной русский, английский \"upper intermediate\"";
         final ArrayList<Organization> workOrganizations = new ArrayList<>();
         final ArrayList<Organization> educationOrganizations = new ArrayList<>();
-        ArrayList<Position> positionArrayListWork = new ArrayList<>();
-        ArrayList<Position> positionArrayListEducation = new ArrayList<>();
+        ArrayList<Organization.Position> positionArrayListWork = new ArrayList<>();
+        ArrayList<Organization.Position> positionArrayListEducation = new ArrayList<>();
         final Resume r1 = new Resume("uuid1", "Григорий Кислин");
         r1.setContact(ContactType.PHONE, "+7(921) 855-0482");
         r1.setContact(ContactType.SKYPE, "grigory.kislin");
@@ -72,10 +72,10 @@ public class ResumeTestData {
         r1.setSection(SectionType.PERSONAL, new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
         r1.setSection(SectionType.ACHIEVEMENT, new ListSection(Arrays.asList((achievement.split("\n")))));
         r1.setSection(SectionType.QUALIFICATIONS, new ListSection(Arrays.asList((qualification.split("\n")))));
-        positionArrayListWork.add(new Position(java.time.LocalDate.of(2013, 10, 1), today, "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."));
+        positionArrayListWork.add(new Organization.Position(java.time.LocalDate.of(2013, 10, 1), today, "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."));
         workOrganizations.add(new Organization(new Link("Java Online Projects", "http://javaops.ru/"), positionArrayListWork));
         r1.setSection(SectionType.EXPERIENCE, new OrganizationSection(workOrganizations));
-        positionArrayListEducation.add(new Position(java.time.LocalDate.of(2013, 3, 1), java.time.LocalDate.of(2013, 5, 1), "\"Functional Programming Principles in Scala\" by Martin Odersky", ""));
+        positionArrayListEducation.add(new Organization.Position(java.time.LocalDate.of(2013, 3, 1), java.time.LocalDate.of(2013, 5, 1), "\"Functional Programming Principles in Scala\" by Martin Odersky", ""));
         educationOrganizations.add(new Organization(new Link("Coursera", "https://www.coursera.org/course/progfun"), positionArrayListEducation));
         r1.setSection(SectionType.EDUCATION, new OrganizationSection(educationOrganizations));
         System.out.println(r1);
