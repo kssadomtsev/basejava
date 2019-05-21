@@ -11,14 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
+    private InOutStrategy strategy;
 
-    protected AbstractPathStorage(String dir) {
+    protected PathStorage(String dir, String strategy) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
+        Objects.requireNonNull(strategy, "strategy must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
+        }
+        if (strategy.equals("Stream")) {
+            this.strategy = new StreamInOutStrategy();
         }
     }
 
@@ -48,7 +53,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume r, Path Path) {
         try {
-            doWrite(r, Files.newOutputStream(Path));
+            strategy.doWrite(r, Files.newOutputStream(Path));
         } catch (IOException e) {
             throw new StorageException("Path write error " + Path.getFileName().toString(), r.getUuid(), e);
         }
@@ -72,7 +77,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path Path) {
         try {
-            return doRead(Files.newInputStream(Path));
+            return strategy.doRead(Files.newInputStream(Path));
         } catch (IOException e) {
             throw new StorageException("Cannot get path", Path.getFileName().toString(), e);
         }
@@ -97,8 +102,4 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         }
         return list;
     }
-
-    protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
-
-    protected abstract Resume doRead(InputStream is) throws IOException;
 }
