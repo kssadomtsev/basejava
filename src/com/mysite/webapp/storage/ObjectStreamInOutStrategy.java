@@ -5,7 +5,7 @@ import com.mysite.webapp.model.Resume;
 
 import java.io.*;
 
-public class StreamInOutStrategy implements InOutStrategy<OutputStream, InputStream> {
+public class ObjectStreamInOutStrategy implements InOutStrategy {
     @Override
     public void doWrite(Resume r, OutputStream out) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(out)) {
