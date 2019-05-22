@@ -3,17 +3,20 @@ package com.mysite.webapp.storage;
 import com.mysite.webapp.exception.StorageException;
 import com.mysite.webapp.model.Resume;
 
-import java.io.*;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
     private InOutStrategy strategy;
+    private String strategyName;
+    private static final List<String> strategies = Arrays.asList("stream");
 
     protected PathStorage(String dir, String strategy) {
         directory = Paths.get(dir);
@@ -22,8 +25,12 @@ public class PathStorage extends AbstractStorage<Path> {
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
-        if (strategy.equals("Stream")) {
+        if (!strategies.contains(strategy.toLowerCase())) {
+            throw new IllegalArgumentException(strategy + " is not correct strategy");
+        }
+        if (strategy.toLowerCase().equals("stream")) {
             this.strategy = new StreamInOutStrategy();
+            this.strategyName = "stream";
         }
     }
 
@@ -53,7 +60,9 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume r, Path Path) {
         try {
-            strategy.doWrite(r, Files.newOutputStream(Path));
+            if (strategyName.equals("stream")) {
+                strategy.doWrite(r, Files.newOutputStream(Path));
+            }
         } catch (IOException e) {
             throw new StorageException("Path write error " + Path.getFileName().toString(), r.getUuid(), e);
         }
@@ -77,7 +86,11 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path Path) {
         try {
-            return strategy.doRead(Files.newInputStream(Path));
+            if (strategyName.equals("stream")) {
+                return strategy.doRead(Files.newInputStream(Path));
+            } else {
+                return null;
+            }
         } catch (IOException e) {
             throw new StorageException("Cannot get path", Path.getFileName().toString(), e);
         }
