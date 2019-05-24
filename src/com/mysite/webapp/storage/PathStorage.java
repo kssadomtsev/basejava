@@ -2,6 +2,7 @@ package com.mysite.webapp.storage;
 
 import com.mysite.webapp.exception.StorageException;
 import com.mysite.webapp.model.Resume;
+import com.mysite.webapp.storage.strategies.IOStrategy;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,9 +14,9 @@ import java.util.Objects;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
-    private InOutStrategy strategy;
+    private IOStrategy strategy;
 
-    protected PathStorage(String dir, InOutStrategy strategy) {
+    protected PathStorage(String dir, IOStrategy strategy) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         Objects.requireNonNull(strategy, "strategy must not be null");
@@ -49,11 +50,11 @@ public class PathStorage extends AbstractStorage<Path> {
     }
 
     @Override
-    protected void doUpdate(Resume r, Path Path) {
+    protected void doUpdate(Resume resume, Path Path) {
         try {
-            strategy.doWrite(r, Files.newOutputStream(Path));
+            strategy.doWrite(resume, Files.newOutputStream(Path));
         } catch (IOException e) {
-            throw new StorageException("Path write error " + Path.getFileName().toString(), r.getUuid(), e);
+            throw new StorageException("Path write error " + Path.getFileName().toString(), resume.getUuid(), e);
         }
     }
 
@@ -63,13 +64,13 @@ public class PathStorage extends AbstractStorage<Path> {
     }
 
     @Override
-    protected void doSave(Resume r, Path Path) {
+    protected void doSave(Resume resume, Path Path) {
         try {
             Files.createFile(Path);
         } catch (IOException e) {
             throw new StorageException("Couldn't create path " + directory.getFileName().toString(), Path.getFileName().toString(), e);
         }
-        doUpdate(r, Path);
+        doUpdate(resume, Path);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.mysite.webapp.storage;
 
 import com.mysite.webapp.exception.StorageException;
 import com.mysite.webapp.model.Resume;
+import com.mysite.webapp.storage.strategies.IOStrategy;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,9 +11,9 @@ import java.util.Objects;
 
 public class FileStorage extends AbstractStorage<File> {
     private File directory;
-    private InOutStrategy strategy;
+    private IOStrategy strategy;
 
-    protected FileStorage(String directory, InOutStrategy strategy) {
+    protected FileStorage(String directory, IOStrategy strategy) {
         Objects.requireNonNull(directory, "directory must not be null");
         Objects.requireNonNull(strategy, "strategy must not be null");
         File dir = new File(directory);
@@ -51,11 +52,11 @@ public class FileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected void doUpdate(Resume r, File file) {
+    protected void doUpdate(Resume resume, File file) {
         try {
-            strategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(file)));
+            strategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("File write error", r.getUuid(), e);
+            throw new StorageException("File write error", resume.getUuid(), e);
         }
     }
 
@@ -65,13 +66,13 @@ public class FileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected void doSave(Resume r, File file) {
+    protected void doSave(Resume resume, File file) {
         try {
             file.createNewFile();
         } catch (IOException e) {
             throw new StorageException("Couldn't create file " + file.getAbsolutePath(), file.getName(), e);
         }
-        doUpdate(r, file);
+        doUpdate(resume, file);
     }
 
     @Override

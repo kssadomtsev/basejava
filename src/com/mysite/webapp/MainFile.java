@@ -15,7 +15,7 @@ public class MainFile {
             throw new RuntimeException("Error", e);
         }
         File dir = new File("./src/com/mysite/webapp");
-        readCatalog(dir, "");
+        readCatalog(dir, 0);
 /*      File dir = new File("./src/com/mysite/webapp");
         System.out.println(dir.isDirectory());
         String[] list = dir.list();
@@ -32,17 +32,25 @@ public class MainFile {
         }
     }
 
-    private static void readCatalog(File folder, String offset) {
+    private static void readCatalog(File folder, int indent) {
+        System.out.println(getIndentString(indent) + "+--" + folder.getName() + "/");
         File[] list = folder.listFiles();
         if (list != null) {
             for (File file : list) {
                 if (file.isDirectory()) {
-                    System.out.println(offset +"\u2580 " + file.getName());;
-                    readCatalog(file, offset +"  ");
+                    readCatalog(file, indent + 1);
                 } else {
-                    System.out.println(offset + "\u255A" + file.getName());
+                    System.out.println(getIndentString(indent + 1) + "+--" + file.getName());
                 }
             }
         }
+    }
+
+    private static String getIndentString(int indent) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < indent; i++) {
+            sb.append("|  ");
+        }
+        return sb.toString();
     }
 }
