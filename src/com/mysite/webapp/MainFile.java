@@ -16,15 +16,6 @@ public class MainFile {
         }
         File dir = new File("./src/com/mysite/webapp");
         readCatalog(dir, 0);
-/*      File dir = new File("./src/com/mysite/webapp");
-        System.out.println(dir.isDirectory());
-        String[] list = dir.list();
-        if (list != null) {
-            for (String name : list) {
-                System.out.println(name);
-            }
-        }*/
-
         try (FileInputStream fis = new FileInputStream(filePath)) {
             System.out.println(fis.read());
         } catch (IOException e) {
