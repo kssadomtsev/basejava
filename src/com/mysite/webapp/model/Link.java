@@ -21,6 +21,14 @@ public class Link implements Serializable {
         this.URL = URL;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getURL() {
+        return URL;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

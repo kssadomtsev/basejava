@@ -19,7 +19,7 @@ public class Organization implements Serializable {
     private Link linkOrganization;
     private List<Position> positionList;
 
-    public Organization(){
+    public Organization() {
     }
 
     public Organization(Link linkOrganization, List<Position> positionList) {
@@ -27,6 +27,14 @@ public class Organization implements Serializable {
         Objects.requireNonNull(positionList, "Position list must be defined");
         this.linkOrganization = linkOrganization;
         this.positionList = positionList;
+    }
+
+    public Link getLinkOrganization() {
+        return linkOrganization;
+    }
+
+    public List<Position> getPositionList() {
+        return positionList;
     }
 
     @Override
@@ -61,7 +69,7 @@ public class Organization implements Serializable {
         private String title;
         private String description;
 
-        public Position(){
+        public Position() {
         }
 
         public Position(LocalDate startDate, String title, String description) {
@@ -76,6 +84,22 @@ public class Organization implements Serializable {
             this.endDate = endDate;
             this.title = title;
             this.description = description;
+        }
+
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
         }
 
         @Override

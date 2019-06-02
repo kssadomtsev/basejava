@@ -21,6 +21,10 @@ public class OrganizationSection extends AbstractSection {
         this.organizationList = organizationList;
     }
 
+    public List<Organization> getOrganizationList() {
+        return organizationList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
