@@ -44,13 +44,13 @@ public class DataStreamIOStrategy implements IOStrategy {
                         writeCollection(dos, organizationList, organization -> {
                             Link link = organization.getLinkOrganization();
                             dos.writeUTF(link.getTitle());
-                            dos.writeUTF(link.getURL() != null ? link.getURL() : "null");
+                            dos.writeUTF(link.getURL() != null ? link.getURL() : "");
                             List<Organization.Position> positionList = organization.getPositionList();
                             writeCollection(dos, positionList, position -> {
                                 dos.writeUTF(position.getStartDate().toString());
                                 dos.writeUTF(position.getEndDate().toString());
                                 dos.writeUTF(position.getTitle());
-                                dos.writeUTF(position.getDescription() != null ? position.getDescription() : "null");
+                                dos.writeUTF(position.getDescription() != null ? position.getDescription() : "");
                             });
                         });
                         break;
@@ -84,14 +84,14 @@ public class DataStreamIOStrategy implements IOStrategy {
                         OrganizationSection organizationSection = new OrganizationSection(getList(dis, () -> {
                             String urlTitle = dis.readUTF();
                             String url = dis.readUTF();
-                            Link link = new Link(urlTitle, url.equals("null") ? null : url);
+                            Link link = new Link(urlTitle, url.equals("") ? null : url);
                             System.out.println(link);
                             List<Organization.Position> positionList = getList(dis, () -> {
                                 LocalDate startDate = LocalDate.parse(dis.readUTF());
                                 LocalDate endDate = LocalDate.parse(dis.readUTF());
                                 String title = dis.readUTF();
                                 String description = dis.readUTF();
-                                return new Organization.Position(startDate, endDate, title, description.equals("null") ? null : description);
+                                return new Organization.Position(startDate, endDate, title, description.equals("") ? null : description);
                             });
                             return new Organization(link, positionList);
                         }));
