@@ -2,9 +2,7 @@ package com.mysite.webapp;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class MainStreams {
     public static void main(String[] args) {
@@ -16,19 +14,11 @@ public class MainStreams {
     }
 
     private static int minValue(int[] values) {
-        int[] sortedArray = Arrays.stream(values).distinct().sorted().toArray();
-        AtomicInteger res = new AtomicInteger();
-        IntStream.range(0, sortedArray.length).forEach(index -> res.set(res.get() + (int) (Math.pow(10, sortedArray.length - 1 - index)) * sortedArray[index]));
-        return res.get();
+        return Arrays.stream(values).distinct().sorted().reduce(0, (number1, number2) -> (number1 * 10) + number2);
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
-        return integers.stream().filter(n -> {
-            if (integers.stream().mapToInt(i -> i).sum() % 2 == 0) {
-                return (n % 2 == 0);
-            } else {
-                return (n % 2 != 0);
-            }
-        }).collect(Collectors.toList());
+        int sum = integers.stream().mapToInt(i -> i).sum() % 2;
+        return integers.stream().filter(n -> n % 2 == sum).collect(Collectors.toList());
     }
 }
