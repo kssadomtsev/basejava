@@ -4,6 +4,7 @@ import com.mysite.webapp.ResumeTestData;
 import com.mysite.webapp.exception.ExistStorageException;
 import com.mysite.webapp.exception.NotExistStorageException;
 import com.mysite.webapp.model.Resume;
+import com.mysite.webapp.util.Config;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
-    protected static final String STORAGE_DIR = "C:\\Users\\Konstantin\\basejava\\storage";
+    protected static final String STORAGE_DIR = Config.get().getStorageDir();
 
     protected Storage storage;
 
