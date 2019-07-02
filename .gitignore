@@ -4,7 +4,7 @@ out
 log
 lib
 /storage
-*.properties
+config/*.properties
 
 
 
