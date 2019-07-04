@@ -7,11 +7,12 @@ import java.util.Arrays;
 import java.time.LocalDate;
 
 public class ResumeTestData {
-    
+
     private static final LocalDate today = java.time.LocalDate.now();
 
     public static Resume fillResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
+/*
         resume.setContact(ContactType.PHONE, "111");
         resume.setContact(ContactType.SKYPE, "@test1");
         resume.setContact(ContactType.EMAIL, "test1@test.ru");
@@ -29,6 +30,7 @@ public class ResumeTestData {
         resume.setSection(SectionType.EDUCATION, new OrganizationSection(Arrays.asList(
                 new Organization(new Link("School1", "http://school11.ru/"),
                         Arrays.asList(new Organization.Position(java.time.LocalDate.of(2010, 10, 1), java.time.LocalDate.of(2013, 10, 1), "Student", "Learning"))))));
+*/
         return resume;
     }
 
