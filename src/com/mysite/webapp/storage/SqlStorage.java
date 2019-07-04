@@ -5,6 +5,7 @@ import com.mysite.webapp.exception.NotExistStorageException;
 import com.mysite.webapp.exception.StorageException;
 import com.mysite.webapp.model.Resume;
 import com.mysite.webapp.sql.ConnectionFactory;
+import com.mysite.webapp.storage.strategies.SqlHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,12 +21,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public void clear() {
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM resume")) {
-            ps.execute();
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+        sqlExecution("DELETE FROM resume", ps -> ps.execute());
     }
 
     @Override
@@ -61,18 +57,14 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?) ON CONFLICT DO NOTHING")) {
+        sqlExecution("INSERT INTO resume (uuid, full_name) VALUES (?,?) ON CONFLICT DO NOTHING", ps -> {
             ps.setString(1, r.getUuid());
             ps.setString(2, r.getFullName());
             int rs = ps.executeUpdate();
             if (rs == 0) {
                 throw new ExistStorageException(r.getUuid());
             }
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
-
+        });
     }
 
     @Override
@@ -113,6 +105,15 @@ public class SqlStorage implements Storage {
             ResultSet rs = ps.executeQuery();
             rs.next();
             return rs.getInt(1);
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
+    }
+
+    private void sqlExecution(String sqlRequest, SqlHelper sqlHelper) {
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sqlRequest)) {
+            sqlHelper.sqlExecute(ps);
         } catch (SQLException e) {
             throw new StorageException(e);
         }
