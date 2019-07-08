@@ -8,7 +8,6 @@ import com.mysite.webapp.sql.ConnectionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class SqlStorage implements Storage {
@@ -76,13 +75,12 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlExecution("SELECT * FROM resume", ps -> {
+        return sqlExecution("SELECT * FROM resume ORDER BY full_name, uuid ASC", ps -> {
             ResultSet rs = ps.executeQuery();
             List<Resume> list = new ArrayList<>(size());
             while (rs.next()) {
                 list.add(new Resume(rs.getString("uuid").trim(), rs.getString("full_name")));
             }
-            Collections.sort(list);
             return list;
         });
     }
