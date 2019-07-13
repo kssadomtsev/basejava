@@ -12,7 +12,6 @@ public class ResumeTestData {
 
     public static Resume fillResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
-/*
         resume.setContact(ContactType.PHONE, "111");
         resume.setContact(ContactType.SKYPE, "@test1");
         resume.setContact(ContactType.EMAIL, "test1@test.ru");
@@ -20,6 +19,7 @@ public class ResumeTestData {
         resume.setContact(ContactType.GITHUB, "https://github.com/test1");
         resume.setContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/test1");
         resume.setContact(ContactType.HOMEPAGE, "http://test1.ru/");
+        /*
         resume.setSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
         resume.setSection(SectionType.PERSONAL, new TextSection("Personal1"));
         resume.setSection(SectionType.ACHIEVEMENT, new ListSection(Arrays.asList("A1", "A2", "A3")));
@@ -30,7 +30,7 @@ public class ResumeTestData {
         resume.setSection(SectionType.EDUCATION, new OrganizationSection(Arrays.asList(
                 new Organization(new Link("School1", "http://school11.ru/"),
                         Arrays.asList(new Organization.Position(java.time.LocalDate.of(2010, 10, 1), java.time.LocalDate.of(2013, 10, 1), "Student", "Learning"))))));
-*/
+        */
         return resume;
     }
 

@@ -78,6 +78,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         return "Resume{" +
                 "uuid='" + uuid + '\'' +
                 ", fullName='" + fullName + '\'' +
+                ", contacts='" + contacts.toString() + '\'' +
                 '}';
     }
 
