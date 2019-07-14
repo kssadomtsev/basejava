@@ -99,12 +99,27 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.sqlExecution("SELECT uuid FROM resume ORDER BY full_name, uuid", ps -> {
+        return sqlHelper.sqlExecution("" +
+                "    SELECT * FROM resume r " +
+                " LEFT JOIN contact c " +
+                "        ON r.uuid = c.resume_uuid " +
+                " ORDER BY full_name, uuid ASC", ps -> {
             ResultSet rs = ps.executeQuery();
             List<Resume> list = new ArrayList<>(size());
-            while (rs.next()) {
-                Resume r = get(rs.getString("uuid").trim());
+            if (rs.next()) {
+                String uuid = rs.getString("uuid").trim();
+                Resume r = new Resume(uuid, rs.getString("full_name"));
                 list.add(r);
+                setContact(r, rs);
+                while (rs.next()) {
+                    String uuid_new = rs.getString("uuid").trim();
+                    if (!uuid_new.equals(uuid)) {
+                        uuid = rs.getString("uuid").trim();
+                        r = new Resume(uuid, rs.getString("full_name"));
+                        list.add(r);
+                    }
+                    setContact(r, rs);
+                }
             }
             return list;
         });
@@ -135,6 +150,14 @@ public class SqlStorage implements Storage {
         try (PreparedStatement ps = conn.prepareStatement("DELETE FROM contact WHERE resume_uuid=?")) {
             ps.setString(1, r.getUuid());
             ps.execute();
+        }
+    }
+
+    private void setContact(Resume r, ResultSet rs) throws SQLException {
+        String value = rs.getString("value");
+        if (value != null) {
+            ContactType type = ContactType.valueOf(rs.getString("type"));
+            r.setContact(type, value);
         }
     }
 }
