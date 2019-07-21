@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>All resumes list</title>
+    <title>Resume</title>
 </head>
 <body>
 <table border="2">
