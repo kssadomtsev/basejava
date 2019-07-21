@@ -20,8 +20,8 @@
         <td>Email</td>
     </tr>
         <tr>
-            <td>"${resume.getFullName()}"</td>
             <td>"${resume.getUuid()}"</td>
+            <td>"${resume.getFullName()}"</td>
             <td>"${resume.getContact("PHONE")}"</td>
             <td>"${resume.getContact("EMAIL")}"</td>
         </tr>
