@@ -14,6 +14,11 @@ public class ResumeServlet extends HttpServlet {
 
     public void init(ServletConfig config)
     {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         storage = Config.get().getStorage();
     }
 
@@ -28,7 +33,7 @@ public class ResumeServlet extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
         String name = request.getParameter("uuid");
         if (name == null) {
-            request.setAttribute("storage", storage);
+            request.setAttribute("storage", storage.getAllSorted());
             request.getRequestDispatcher("/WEB-INF/resumes.jsp").forward(request, response);
         } else {
             request.setAttribute("resume", storage.get(name));

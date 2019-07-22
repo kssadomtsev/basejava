@@ -18,7 +18,7 @@
         <td>Resume UUID</td>
         <td>Full Name</td>
     </tr>
-    <c:forEach items="${storage.getAllSorted()}" var="item">
+    <c:forEach items="${storage}" var="item">
         <tr>
             <td><c:out value="${item.getFullName()}"/></td>
             <td><a href="?uuid=${item.getUuid()}"><c:out value="${item.getUuid()}"/></a></td>
