@@ -4,6 +4,7 @@ import com.mysite.webapp.exception.ExistStorageException;
 import com.mysite.webapp.exception.NotExistStorageException;
 import com.mysite.webapp.model.*;
 import com.mysite.webapp.sql.SqlHelper;
+import com.mysite.webapp.util.JsonParser;
 
 import java.sql.*;
 import java.util.*;
@@ -65,7 +66,7 @@ public class SqlStorage implements Storage {
                     deleteProperties(r, conn, "DELETE FROM contact WHERE resume_uuid=?");
                     deleteProperties(r, conn, "DELETE FROM section WHERE resume_uuid=?");
                     addContacts(r, conn);
-                    addContacts(r, conn);
+                    addSections(r, conn);
                     return null;
                 }
         );
@@ -158,22 +159,8 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, AbstractSection> e : r.getSections().entrySet()) {
                 ps.setString(1, r.getUuid());
                 ps.setString(2, e.getKey().name());
-                SectionType sectionType = e.getKey();
-                String content = "";
-                switch (sectionType) {
-                    case PERSONAL:
-                    case OBJECTIVE:
-                        TextSection textSection = (TextSection) e.getValue();
-                        content = textSection.getContent();
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        ListSection listSection = (ListSection) e.getValue();
-                        List<String> contentList = listSection.getContentList();
-                        content = String.join("\n", contentList);
-                        break;
-                }
-                ps.setString(3, content);
+                AbstractSection section = e.getValue();
+                ps.setString(3, JsonParser.write(section, AbstractSection.class));
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -199,16 +186,7 @@ public class SqlStorage implements Storage {
         String value = rs.getString("value");
         if (value != null) {
             SectionType sectionType = SectionType.valueOf(rs.getString("type"));
-            switch (sectionType) {
-                case PERSONAL:
-                case OBJECTIVE:
-                    r.setSection(sectionType, new TextSection(value));
-                    break;
-                case ACHIEVEMENT:
-                case QUALIFICATIONS:
-                    r.setSection(sectionType, new ListSection(Arrays.asList(value.split("\n"))));
-                    break;
-            }
+            r.setSection(sectionType, JsonParser.read(value, AbstractSection.class));
         }
     }
 }
