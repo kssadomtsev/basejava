@@ -12,3 +12,13 @@ footer {
     padding: 5px 20px;
     margin: 20px 0;
 }
+
+section {
+    margin: 10px;
+    padding: 10px;
+}
+
+table {
+    margin: 10px;
+    padding: 10px;
+}

@@ -9,7 +9,7 @@ public class OrganizationSection extends AbstractSection {
 
     private List<Organization> organizationList;
 
-    public OrganizationSection(){
+    public OrganizationSection() {
     }
 
     public OrganizationSection(Organization... items) {
@@ -43,5 +43,9 @@ public class OrganizationSection extends AbstractSection {
         return "OrganizationSection{" +
                 "organizationList=" + organizationList +
                 '}';
+    }
+
+    public String toHtml() {
+        return toString();
     }
 }

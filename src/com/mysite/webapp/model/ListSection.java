@@ -9,7 +9,7 @@ public class ListSection extends AbstractSection {
 
     private List<String> contentList;
 
-    public ListSection(){
+    public ListSection() {
     }
 
     public ListSection(String... items) {
@@ -40,8 +40,13 @@ public class ListSection extends AbstractSection {
 
     @Override
     public String toString() {
-        return "ListSection{" +
-                "contentList=" + contentList +
-                '}';
+        return String.join("\n", contentList);
+    }
+
+    public String toHtml() {
+        final StringBuilder builder = new StringBuilder();
+        contentList.forEach((val) -> builder.append("- ").append(val).append("<br/>"));
+        return "<br/>" + builder.toString();
+
     }
 }

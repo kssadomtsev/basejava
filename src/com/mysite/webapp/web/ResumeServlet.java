@@ -1,9 +1,11 @@
 package com.mysite.webapp.web;
 
+import com.mysite.webapp.model.*;
 import com.mysite.webapp.storage.Storage;
 import com.mysite.webapp.util.Config;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,18 +14,59 @@ import java.io.IOException;
 public class ResumeServlet extends HttpServlet {
     Storage storage;
 
-    public void init(ServletConfig config)
-    {
+    public void init(ServletConfig config) throws ServletException {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        super.init(config);
         storage = Config.get().getStorage();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+        String uuid = request.getParameter("uuid");
+        String fullName = request.getParameter("fullName");
+        final boolean newResume = uuid == null || uuid.length() == 0;
+        if (newResume) {
+            Resume r = new Resume(fullName);
+            storage.save(r);
+            request.setAttribute("resume", r);
+            request.getRequestDispatcher("/WEB-INF/jsp/edit.jsp").forward(request, response);
+        } else {
+            Resume r = storage.get(uuid);
+            r.setFullName(fullName);
+            for (ContactType type : ContactType.values()) {
+                String value = request.getParameter(type.name());
+                if (value != null && value.trim().length() != 0) {
+                    r.setContact(type, value);
+                } else {
+                    r.getContacts().remove(type);
+                }
+            }
+            for (SectionType type : SectionType.values()) {
+                String value = request.getParameter(type.name());
+                if (value != null && value.trim().length() != 0) {
+                    switch (type) {
+                        case OBJECTIVE:
+                        case PERSONAL:
+                            r.setSection(type, new TextSection(value));
+                            break;
+                        case ACHIEVEMENT:
+                        case QUALIFICATIONS:
+                            r.setSection(type, new ListSection(value.split("\\n")));
+                            break;
+                    }
+                } else {
+                    r.getSections().remove(type);
+                }
+            }
+            storage.update(r);
+            response.sendRedirect("resume");
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
@@ -31,13 +74,29 @@ public class ResumeServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 //        response.setHeader("Content-Type", "text/html; charset=UTF-8");
         response.setContentType("text/html; charset=UTF-8");
-        String name = request.getParameter("uuid");
-        if (name == null) {
+        String uuid = request.getParameter("uuid");
+        String action = request.getParameter("action");
+        if (action == null) {
             request.setAttribute("storage", storage.getAllSorted());
-            request.getRequestDispatcher("/WEB-INF/resumes.jsp").forward(request, response);
-        } else {
-            request.setAttribute("resume", storage.get(name));
-            request.getRequestDispatcher("/WEB-INF/resume.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/resumes.jsp").forward(request, response);
+            return;
         }
+        Resume r;
+        switch (action) {
+            case "delete":
+                storage.delete(uuid);
+                response.sendRedirect("resume");
+                return;
+            case "view":
+            case "edit":
+                r = storage.get(uuid);
+                break;
+            default:
+                throw new IllegalArgumentException("Action " + action + " is illegal");
+        }
+        request.setAttribute("resume", r);
+        request.getRequestDispatcher(
+                ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
+        ).forward(request, response);
     }
 }
