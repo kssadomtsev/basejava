@@ -10,8 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
+    private static final LocalDate today = java.time.LocalDate.now();
     Storage storage;
 
     public void init(ServletConfig config) throws ServletException {
@@ -34,6 +39,12 @@ public class ResumeServlet extends HttpServlet {
         if (newResume) {
             Resume r = new Resume(fullName);
             storage.save(r);
+            r.setSection(SectionType.EXPERIENCE, new OrganizationSection(Arrays.asList(
+                    new Organization(new Link("", ""),
+                            Arrays.asList(new Organization.Position(today, today, "", ""))))));
+            r.setSection(SectionType.EDUCATION, new OrganizationSection(Arrays.asList(
+                    new Organization(new Link("", ""),
+                            Arrays.asList(new Organization.Position(today, today, "", ""))))));
             request.setAttribute("resume", r);
             request.getRequestDispatcher("/WEB-INF/jsp/edit.jsp").forward(request, response);
         } else {
@@ -49,6 +60,8 @@ public class ResumeServlet extends HttpServlet {
             }
             for (SectionType type : SectionType.values()) {
                 String value = request.getParameter(type.name());
+                System.out.println(type);
+                // System.out.println(value);
                 if (value != null && value.trim().length() != 0) {
                     switch (type) {
                         case OBJECTIVE:
@@ -58,6 +71,28 @@ public class ResumeServlet extends HttpServlet {
                         case ACHIEVEMENT:
                         case QUALIFICATIONS:
                             r.setSection(type, new ListSection(value.split("\\n")));
+                            break;
+                        case EXPERIENCE:
+                        case EDUCATION:
+                            int organizationCount = Integer.valueOf(request.getParameter("organizationCount" + type));
+                            List<Organization> organizationList = new ArrayList<>(organizationCount);
+                            for (int i = 0; i < organizationCount; i++) {
+                                String urlTitle = request.getParameter("link" + type + i);
+                                String url = request.getParameter("linkUrl" + type + i);
+                                Link link = new Link(urlTitle, url.equals("") ? null : url);
+                                System.out.println(link);
+                                int posCount = Integer.valueOf(request.getParameter(type + String.valueOf(i) + "_posCount"));
+                                List<Organization.Position> positionList = new ArrayList<>(posCount);
+                                for (int j = 0; j < posCount; j++) {
+                                    LocalDate startDate = LocalDate.parse(request.getParameter(type + String.valueOf(i) + "_" + j + "_start"));
+                                    LocalDate endDate = LocalDate.parse(request.getParameter(type + String.valueOf(i) + "_" + j + "_end"));
+                                    String title = request.getParameter(type + String.valueOf(i) + "_" + j + "_title");
+                                    String description = request.getParameter(type + String.valueOf(i) + "_" + j + "_description");
+                                    positionList.add(new Organization.Position(startDate, endDate, title, description));
+                                }
+                                organizationList.add(new Organization(link, positionList));
+                            }
+                            r.setSection(type, new OrganizationSection(organizationList));
                             break;
                     }
                 } else {

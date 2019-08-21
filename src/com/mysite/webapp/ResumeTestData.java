@@ -23,14 +23,12 @@ public class ResumeTestData {
         resume.setSection(SectionType.PERSONAL, new TextSection("Personal1"));
         resume.setSection(SectionType.ACHIEVEMENT, new ListSection(Arrays.asList("A1", "A2", "A3")));
         resume.setSection(SectionType.QUALIFICATIONS, new ListSection(Arrays.asList("Q1", "Q2", "Q3")));
-        /*
         resume.setSection(SectionType.EXPERIENCE, new OrganizationSection(Arrays.asList(
                 new Organization(new Link("Organization1", "http://organization1.ru/"),
                         Arrays.asList(new Organization.Position(java.time.LocalDate.of(2013, 10, 1), today, "Specialist", "Some work things"))))));
         resume.setSection(SectionType.EDUCATION, new OrganizationSection(Arrays.asList(
                 new Organization(new Link("School1", "http://school11.ru/"),
                         Arrays.asList(new Organization.Position(java.time.LocalDate.of(2010, 10, 1), java.time.LocalDate.of(2013, 10, 1), "Student", "Learning"))))));
-        */
         return resume;
     }
 
