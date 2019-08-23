@@ -23,7 +23,6 @@
         row.insertCell(num).outerHTML = "<th>"+value+"</th>";
     }
 
-
     function handleClickTable(clickedId, type, loopIndex)
     {
         if(clickedId == "addPosition") {
@@ -85,7 +84,6 @@
             table.setAttribute("cellpadding", "8");
             table.setAttribute("cellspacing", "0");
 
-
             var row = table.insertRow(0);
             insertCellText(0, row, "Дата начала");
             insertCellText(1, row, "Дата окончания");
@@ -98,8 +96,6 @@
             insertCell(2, row, type+listLength+"_"+(0)+"_title");
             insertCell(3, row, type+listLength+"_"+(0)+"_description");
             node.appendChild(table);
-
-
 
             var buttonAddPos = document.createElement("input");
             buttonAddPos.type = "button";
@@ -119,8 +115,6 @@
 
             var orgCount = document.getElementById("organizationCount"+type);
             orgCount.value = parseInt(orgCount.value)+1;
-
-
         }
         else if(clickedId == "remOrganization"){
             var list = document.getElementById("list_" + type);
@@ -211,9 +205,6 @@
                      </li>
                  </c:forEach>
                  </ol>
-            <%--
-            <input type="button" value="Добавить организацию" onclick="handleClick(this.id, ${organizationList.hashCode().toString()});" id="addOrganization" />
-            --%>
             <% } %>
         </dl>
     </c:forEach>
