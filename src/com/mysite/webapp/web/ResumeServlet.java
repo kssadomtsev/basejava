@@ -75,10 +75,13 @@ public class ResumeServlet extends HttpServlet {
                         case EXPERIENCE:
                         case EDUCATION:
                             int organizationCount = Integer.valueOf(request.getParameter("organizationCount" + type));
+                            System.out.println(organizationCount);
                             List<Organization> organizationList = new ArrayList<>(organizationCount);
                             for (int i = 0; i < organizationCount; i++) {
                                 String urlTitle = request.getParameter("link" + type + i);
+                                System.out.println(urlTitle);
                                 String url = request.getParameter("linkUrl" + type + i);
+                                System.out.println(url);
                                 Link link = new Link(urlTitle, url.equals("") ? null : url);
                                 System.out.println(link);
                                 int posCount = Integer.valueOf(request.getParameter(type + String.valueOf(i) + "_posCount"));
@@ -92,6 +95,7 @@ public class ResumeServlet extends HttpServlet {
                                 }
                                 organizationList.add(new Organization(link, positionList));
                             }
+                            System.out.println(organizationList);
                             r.setSection(type, new OrganizationSection(organizationList));
                             break;
                     }

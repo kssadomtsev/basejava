@@ -10,16 +10,128 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript">
-    function handleClick(clickedId, el)
-    {
-        if(clickedId == "addOrganization")
-            alert(el);
-            var element = document.createElement("input");
-            element.setAttribute("type", "text");
-            element.setAttribute("name", "mytext");
-            var spanvar = document.getElementById(el);
-            spanvar.appendChild(element);
+
+    function insertCell(num, row, name) {
+        var cell = row.insertCell(num);
+        var element = document.createElement("input");
+        element.type = "text";
+        element.name=name;
+        element.size = 30;
+        cell.appendChild(element);
     }
+    function insertCellText(num, row, value) {
+        row.insertCell(num).outerHTML = "<th>"+value+"</th>";
+    }
+
+
+    function handleClickTable(clickedId, type, loopIndex)
+    {
+        if(clickedId == "addPosition") {
+            var table = document.getElementById(type+loopIndex+"_table");
+
+            var rowCount = table.rows.length;
+            var row = table.insertRow(rowCount);
+
+            insertCell(0, row, type+loopIndex+"_"+(rowCount-1)+"_start");
+            insertCell(1, row, type+loopIndex+"_"+(rowCount-1)+"_end");
+            insertCell(2, row, type+loopIndex+"_"+(rowCount-1)+"_title");
+            insertCell(3, row, type+loopIndex+"_"+(rowCount-1)+"_description");
+
+            var posCount = document.getElementById(type+loopIndex+"_posCount");
+            posCount.value = parseInt(posCount.value)+1;
+        }
+        else if(clickedId == "remPosition") {
+            try {
+                var table = document.getElementById(type+loopIndex+"_table");
+                var rowCount = table.rows.length;
+                table.deleteRow(rowCount-1);
+                var posCount = document.getElementById(type+loopIndex+"_posCount");
+                posCount.value = parseInt(posCount.value)-1;
+            }catch(e) {
+                alert(e);
+            }
+        }
+    }
+
+    function handleClicklist (clickedId, type) {
+        if(clickedId == "addOrganization") {
+            var list = document.getElementById("list_" + type);
+            var node = document.createElement("LI");
+
+            var listLength = list.getElementsByTagName("li").length;
+
+            var hidden = document.createElement("input");
+            hidden.type = "hidden";
+            hidden.id = type + listLength + "_posCount";
+            hidden.name = type + listLength + "_posCount";
+            hidden.value = listLength;
+            node.appendChild(hidden);
+
+            var inputLink = document.createElement("input");
+            inputLink.type = "text";
+            inputLink.name="link"+type+listLength;
+            inputLink.size = 30;
+            node.appendChild(inputLink);
+
+            var inputLinkUrl = document.createElement("input");
+            inputLinkUrl.type = "text";
+            inputLinkUrl.name="linkUrl"+type+listLength;
+            inputLinkUrl.size = 30;
+            node.appendChild(inputLinkUrl);
+
+            var table =  document.createElement("table");
+            table.id = type + listLength + "_table";
+            table.setAttribute("border", "1");
+            table.setAttribute("cellpadding", "8");
+            table.setAttribute("cellspacing", "0");
+
+
+            var row = table.insertRow(0);
+            insertCellText(0, row, "Дата начала");
+            insertCellText(1, row, "Дата окончания");
+            insertCellText(2, row, "Должность");
+            insertCellText(3, row, "Описание");
+
+            row = table.insertRow(1);
+            insertCell(0, row, type+listLength+"_"+(0)+"_start");
+            insertCell(1, row, type+listLength+"_"+(0)+"_end");
+            insertCell(2, row, type+listLength+"_"+(0)+"_title");
+            insertCell(3, row, type+listLength+"_"+(0)+"_description");
+            node.appendChild(table);
+
+
+
+            var buttonAddPos = document.createElement("input");
+            buttonAddPos.type = "button";
+            buttonAddPos.value = "Добавить позицию";
+            buttonAddPos.id = "addPosition";
+            buttonAddPos.addEventListener('click', handleClickTable(this.id, type, listLength), false);
+            node.appendChild(buttonAddPos);
+
+            var buttonRemPos = document.createElement("input");
+            buttonRemPos.type = "button";
+            buttonRemPos.value = "Удалить последнюю позицию";
+            buttonRemPos.id = "remPosition";
+            buttonRemPos.addEventListener('click', handleClickTable(this.id, type, listLength), false);
+            node.appendChild(buttonRemPos);
+
+            list.appendChild(node);
+
+            var orgCount = document.getElementById("organizationCount"+type);
+            orgCount.value = parseInt(orgCount.value)+1;
+
+
+        }
+        else if(clickedId == "remOrganization"){
+            var list = document.getElementById("list_" + type);
+            var listLength = list.getElementsByTagName("li").length;
+            list.removeChild(list.childNodes[listLength]);
+
+            var orgCount = document.getElementById("organizationCount"+type);
+            orgCount.value = parseInt(orgCount.value)-1;
+        }
+    }
+
 </script>
 <html>
 <head>
@@ -63,10 +175,12 @@
                         pageContext.setAttribute("organizationList", organizationList);
                         pageContext.setAttribute("organizationCount", organizationList.size());%>
                 <input type="hidden" name="${type.name()}" value="${type.name()}">
-                <input type="hidden" name="organizationCount${type}" value="${organizationCount}">
-                <span id="${organizationList.hashCode().toString()}">
+                <input type="hidden" id="organizationCount${type}" name="organizationCount${type}" value="${organizationCount}">
+                <input type="button" value="Добавить организацию" onclick="handleClicklist(this.id, '${type}');" id="addOrganization" /><input type="button" value="Удалить последнюю организацию" onclick="handleClicklist(this.id, '${type}');" id="remOrganization" />
+                <ol id="list_${type}">
                  <c:forEach var="organization" items="${organizationList}" varStatus="loop">
                     <jsp:useBean id="organization" type="com.mysite.webapp.model.Organization"/>
+                     <li>
                      <%
                          Link link = organization.getLinkOrganization();
                          pageContext.setAttribute("link", link);
@@ -74,9 +188,9 @@
                          pageContext.setAttribute("positionList", positionList);
                          pageContext.setAttribute("posCount", positionList.size());
                      %>
-                     <input type="hidden" name="${type}${loop.index}_posCount" value="${posCount}">
+                     <input type="hidden" id="${type}${loop.index}_posCount" name="${type}${loop.index}_posCount" value="${posCount}">
                      <dd>​<input type="text" name="link${type}${loop.index}" size=30 value="${link.title}"><input type="text" name="linkUrl${type}${loop.index}" size=30 value="${link.URL}"></dd><br/>
-                     <table border="1" cellpadding="8" cellspacing="0">
+                     <table id="${type}${loop.index}_table" border="1" cellpadding="8" cellspacing="0">
                             <tr>
                                 <th>Дата начала</th>
                                 <th>Дата окончания</th>
@@ -93,8 +207,10 @@
                             </tr>
                         </c:forEach>
                     </table>
+                         <input type="button" value="Добавить позицию" onclick="handleClickTable(this.id, '${type}', '${loop.index}');" id="addPosition" /><input type="button" value="Удалить последнюю позицию" onclick="handleClickTable(this.id, '${type}', '${loop.index}');" id="remPosition" />
+                     </li>
                  </c:forEach>
-                 </span>
+                 </ol>
             <%--
             <input type="button" value="Добавить организацию" onclick="handleClick(this.id, ${organizationList.hashCode().toString()});" id="addOrganization" />
             --%>
