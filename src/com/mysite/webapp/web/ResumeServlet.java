@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
-    private static final LocalDate today = java.time.LocalDate.now();
     Storage storage;
 
     public void init(ServletConfig config) throws ServletException {
@@ -37,7 +36,6 @@ public class ResumeServlet extends HttpServlet {
         final boolean newResume = uuid == null || uuid.length() == 0;
         Resume r;
         if (newResume) {
-            System.out.println("Creating new resume in doPost");
             r = new Resume(fullName);
         } else {
             r = storage.get(uuid);
@@ -53,7 +51,7 @@ public class ResumeServlet extends HttpServlet {
         }
         for (SectionType type : SectionType.values()) {
             String value = request.getParameter(type.name());
-            System.out.println(type);
+           // System.out.println(type);
             // System.out.println(value);
             if (value != null && value.trim().length() != 0) {
                 switch (type) {
@@ -72,9 +70,9 @@ public class ResumeServlet extends HttpServlet {
                         List<Organization> organizationList = new ArrayList<>(organizationCount);
                         for (int i = 0; i < organizationCount; i++) {
                             String urlTitle = request.getParameter("link" + type + i);
-                            System.out.println(urlTitle);
+                            //System.out.println(urlTitle);
                             String url = request.getParameter("linkUrl" + type + i);
-                            System.out.println(url);
+                           // System.out.println(url);
                             Link link = new Link(urlTitle, url.equals("") ? null : url);
                             //System.out.println(link);
                             int posCount = Integer.valueOf(request.getParameter(type + String.valueOf(i) + "_posCount"));

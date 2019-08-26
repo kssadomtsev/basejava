@@ -21,8 +21,6 @@ public class Resume implements Comparable<Resume>, Serializable {
     static {
         NEW.setSection(SectionType.EXPERIENCE, OrganizationSection.NEW);
         NEW.setSection(SectionType.EDUCATION,  OrganizationSection.NEW);
-        System.out.println("Creating new resume");
-        System.out.println(NEW);
     }
 
     // Unique identifier
