@@ -1,7 +1,3 @@
-<%@ page import="com.mysite.webapp.model.Link" %>
-<%@ page import="com.mysite.webapp.model.Organization" %>
-<%@ page import="com.mysite.webapp.model.OrganizationSection" %>
-<%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
@@ -34,52 +30,44 @@
         <c:forEach var="sectionEntry" items="${resume.sections}">
             <jsp:useBean id="sectionEntry"
                          type="java.util.Map.Entry<com.mysite.webapp.model.SectionType, com.mysite.webapp.model.AbstractSection>"/>
-                <%
-                switch (sectionEntry.getKey()){
-                        case OBJECTIVE:
-                        case PERSONAL:
-                        case ACHIEVEMENT:
-                        case QUALIFICATIONS:
-                            out.println(sectionEntry.getKey().toHtml(sectionEntry.getValue().toHtml()));
-                            break;
-                        case EXPERIENCE:
-                        case EDUCATION:
-                            out.println(sectionEntry.getKey().getTitle() + ":");
-                            OrganizationSection organizationSection = (OrganizationSection) sectionEntry.getValue();
-                            List<Organization> organizationList = organizationSection.getOrganizationList();
-                            pageContext.setAttribute("organizationList", organizationList);
-                            %><br/>
-        <c:forEach var="organization" items="${organizationList}">
-            <jsp:useBean id="organization" type="com.mysite.webapp.model.Organization"/>
-                <%
-                                        Link link = organization.getLinkOrganization();
-                                        pageContext.setAttribute("link", link);
-                                        List<Organization.Position> positionList = organization.getPositionList();
-                                        pageContext.setAttribute("positionList", positionList);
-                                  %>
-        <a href="${link.URL}">${link.title}</a> :<br/>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <tr>
-            <th>Дата начала</th>
-            <th>Дата окончания</th>
-            <th>Должность</th>
-            <th>Описание</th>
-        </tr>
-        <c:forEach items="${positionList}" var="position">
-            <jsp:useBean id="position" type="com.mysite.webapp.model.Organization.Position"/>
-            <tr>
-                <td>${position.getStartDate().toString()}</td>
-                <td>${position.getEndDate().toString()}</td>
-                <td>${position.getTitle()}</td>
-                <td>${position.getDescription()}</td>
-            </tr>
+        <c:choose>
+        <c:when test="${sectionEntry.getKey()=='OBJECTIVE' || sectionEntry.getKey()=='PERSONAL' || sectionEntry.getKey()=='ACHIEVEMENT' || sectionEntry.getKey()=='QUALIFICATIONS'}">
+                <%=sectionEntry.getKey().toHtml(sectionEntry.getValue().toHtml())%><br/>
+        </c:when>
+        <c:when test="${sectionEntry.getKey()=='EXPERIENCE' || sectionEntry.getKey()=='EDUCATION'}">
+                <%=sectionEntry.getKey().getTitle()%><br/>
+            <c:set var="organizationSection" value="${sectionEntry.getValue()}"/>
+            <jsp:useBean id="organizationSection" type="com.mysite.webapp.model.OrganizationSection"/>
+            <c:set var="organizationList" value="${organizationSection.getOrganizationList()}"/>
+            <jsp:useBean id="organizationList" type="java.util.List<com.mysite.webapp.model.Organization>"/>
+            <c:forEach var="organization" items="${organizationList}">
+                <jsp:useBean id="organization" type="com.mysite.webapp.model.Organization"/>
+                <c:set var="link" value="${organization.getLinkOrganization()}"/>
+                <jsp:useBean id="link" type="com.mysite.webapp.model.Link"/>
+                <c:set var="positionList" value="${organization.getPositionList()}"/>
+                <jsp:useBean id="positionList" type="java.util.List<com.mysite.webapp.model.Organization.Position>"/>
+                <a href="${link.URL}">${link.title}</a> :<br/>
+                <table border="1" cellpadding="8" cellspacing="0">
+                    <tr>
+                        <th>Дата начала</th>
+                        <th>Дата окончания</th>
+                        <th>Должность</th>
+                        <th>Описание</th>
+                    </tr>
+                    <c:forEach items="${positionList}" var="position">
+                    <jsp:useBean id="position" type="com.mysite.webapp.model.Organization.Position"/>
+                    <tr>
+                        <td>${position.getStartDate().toString()}</td>
+                        <td>${position.getEndDate().toString()}</td>
+                        <td>${position.getTitle()}</td>
+                        <td>${position.getDescription()}</td>
+                    </tr>
+                    </c:forEach>
+                </table>
+            </c:forEach>
+        </c:when>
+        </c:choose>
         </c:forEach>
-    </table>
-    </c:forEach>
-    <% break;
-    }
-    %><br/>
-    </c:forEach>
     <p>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

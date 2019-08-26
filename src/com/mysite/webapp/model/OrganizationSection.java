@@ -1,11 +1,16 @@
 package com.mysite.webapp.model;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class OrganizationSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
+    private static final LocalDate today = java.time.LocalDate.now();
+    public static final OrganizationSection NEW =  new OrganizationSection(Arrays.asList(
+            new Organization(new Link("", ""),
+                    Arrays.asList(new Organization.Position(today, today, "", "")))));
 
     private List<Organization> organizationList;
 

@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="com.mysite.webapp.model.*" %>
-<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript">
@@ -53,17 +52,17 @@
     }
 
     function handleClicklist (clickedId, type) {
+        var list = document.getElementById("list_" + type);
+        var node = document.createElement("LI");
+        var listLength = list.getElementsByTagName("li").length;
+        var orgCount = document.getElementById("organizationCount"+type);
         if(clickedId == "addOrganization") {
-            var list = document.getElementById("list_" + type);
-            var node = document.createElement("LI");
-
-            var listLength = list.getElementsByTagName("li").length;
 
             var hidden = document.createElement("input");
             hidden.type = "hidden";
             hidden.id = type + listLength + "_posCount";
             hidden.name = type + listLength + "_posCount";
-            hidden.value = listLength;
+            hidden.value = '1';
             node.appendChild(hidden);
 
             var inputLink = document.createElement("input");
@@ -113,15 +112,11 @@
 
             list.appendChild(node);
 
-            var orgCount = document.getElementById("organizationCount"+type);
             orgCount.value = parseInt(orgCount.value)+1;
         }
         else if(clickedId == "remOrganization"){
-            var list = document.getElementById("list_" + type);
-            var listLength = list.getElementsByTagName("li").length;
-            list.removeChild(list.childNodes[listLength]);
+            list.removeChild(list.children[listLength-1]);
 
-            var orgCount = document.getElementById("organizationCount"+type);
             orgCount.value = parseInt(orgCount.value)-1;
         }
     }
@@ -152,62 +147,59 @@
         </c:forEach>
         <h3>Секции:</h3>
         <c:forEach var="type" items="<%=SectionType.values()%>">
+        <dl>
             <jsp:useBean id="type" type="com.mysite.webapp.model.SectionType"/>
-            <dl>
-                <dt>${type.title}</dt>
-                <% switch (type){
-                    case OBJECTIVE:
-                    case PERSONAL:
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:%>
-                <dd>​<textarea name="${type.name()}" rows="5" cols="40">${resume.getSection(type).toString()}</textarea></dd>
-                <%  break;
-                    case EXPERIENCE:
-                    case EDUCATION:
-                        OrganizationSection organizationSection = (OrganizationSection) resume.getSection(type);
-                        List<Organization> organizationList = organizationSection.getOrganizationList();
-                        pageContext.setAttribute("organizationList", organizationList);
-                        pageContext.setAttribute("organizationCount", organizationList.size());%>
-                <input type="hidden" name="${type.name()}" value="${type.name()}">
-                <input type="hidden" id="organizationCount${type}" name="organizationCount${type}" value="${organizationCount}">
-                <input type="button" value="Добавить организацию" onclick="handleClicklist(this.id, '${type}');" id="addOrganization" /><input type="button" value="Удалить последнюю организацию" onclick="handleClicklist(this.id, '${type}');" id="remOrganization" />
-                <ol id="list_${type}">
-                 <c:forEach var="organization" items="${organizationList}" varStatus="loop">
+            <dt>${type.title}</dt>
+            <c:choose>
+                <c:when test="${type=='OBJECTIVE' || type=='PERSONAL' || type=='ACHIEVEMENT' || type=='QUALIFICATIONS'}">
+                    <dd>​<textarea name="${type.name()}" rows="5" cols="40">${resume.getSection(type).toString()}</textarea></dd>
+                </c:when>
+                <c:when test="${type=='EXPERIENCE' || type=='EDUCATION'}">
+                    <dd>
+                    <c:set var="organizationSection" value="${resume.getSection(type)}"/>
+                    <jsp:useBean id="organizationSection" type="com.mysite.webapp.model.OrganizationSection"/>
+                    <c:set var="organizationList" value="${organizationSection.getOrganizationList()}"/>
+                    <jsp:useBean id="organizationList" type="java.util.List<com.mysite.webapp.model.Organization>"/>
+                     <c:set var="organizationCount" value="${organizationList.size()}"/>
+                    <input type="hidden" name="${type.name()}" value="${type.name()}">
+                    <input type="hidden" id="organizationCount${type}" name="organizationCount${type}" value="${organizationCount}">
+                    <input type="button" value="Добавить организацию" onclick="handleClicklist(this.id, '${type}');" id="addOrganization" /><input type="button" value="Удалить последнюю организацию" onclick="handleClicklist(this.id, '${type}');" id="remOrganization" />
+                    <ol id="list_${type}">
+                    <c:forEach var="organization" items="${organizationList}" varStatus="loop">
                     <jsp:useBean id="organization" type="com.mysite.webapp.model.Organization"/>
-                     <li>
-                     <%
-                         Link link = organization.getLinkOrganization();
-                         pageContext.setAttribute("link", link);
-                         List<Organization.Position> positionList = organization.getPositionList();
-                         pageContext.setAttribute("positionList", positionList);
-                         pageContext.setAttribute("posCount", positionList.size());
-                     %>
-                     <input type="hidden" id="${type}${loop.index}_posCount" name="${type}${loop.index}_posCount" value="${posCount}">
-                     <dd>​<input type="text" name="link${type}${loop.index}" size=30 value="${link.title}"><input type="text" name="linkUrl${type}${loop.index}" size=30 value="${link.URL}"></dd><br/>
-                     <table id="${type}${loop.index}_table" border="1" cellpadding="8" cellspacing="0">
-                            <tr>
-                                <th>Дата начала</th>
-                                <th>Дата окончания</th>
-                                <th>Должность</th>
-                                <th>Описание</th>
-                            </tr>
-                        <c:forEach items="${positionList}" var="position" varStatus="loopPos">
-                        <jsp:useBean id="position" type="com.mysite.webapp.model.Organization.Position"/>
-                            <tr>
-                                <td>​<input type="text" name="${type}${loop.index}_${loopPos.index}_start" size=30 value="${position.getStartDate().toString()}"></td>
-                                <td>​<input type="text" name="${type}${loop.index}_${loopPos.index}_end" size=30 value="${position.getEndDate().toString()}"></td>
-                                <td>​<input type="text" name="${type}${loop.index}_${loopPos.index}_title" size=30 value="${position.getTitle().toString()}"></td>
-                                <td>​<input type="text" name="${type}${loop.index}_${loopPos.index}_description" size=30 value="${position.getDescription().toString()}"></td>
-                            </tr>
-                        </c:forEach>
-                    </table>
-                         <input type="button" value="Добавить позицию" onclick="handleClickTable(this.id, '${type}', '${loop.index}');" id="addPosition" /><input type="button" value="Удалить последнюю позицию" onclick="handleClickTable(this.id, '${type}', '${loop.index}');" id="remPosition" />
-                     </li>
-                 </c:forEach>
-                 </ol>
-            <% } %>
+                        <li>
+                                <c:set var="link" value="${organization.getLinkOrganization()}"/>
+                                <jsp:useBean id="link" type="com.mysite.webapp.model.Link"/>
+                                <c:set var="positionList" value="${organization.getPositionList()}"/>
+                                <jsp:useBean id="positionList" type="java.util.List<com.mysite.webapp.model.Organization.Position>"/>
+                                <c:set var="posCount" value="${positionList.size()}"/>
+                            <input type="hidden" id="${type}${loop.index}_posCount" name="${type}${loop.index}_posCount" value="${posCount}">
+                            <dd>​<input type="text" name="link${type}${loop.index}" size=30 value="${link.title}"><input type="text" name="linkUrl${type}${loop.index}" size=30 value="${link.URL}"></dd><br/>
+                            <table id="${type}${loop.index}_table" border="1" cellpadding="8" cellspacing="0">
+                                <tr>
+                                    <th>Дата начала</th>
+                                    <th>Дата окончания</th>
+                                    <th>Должность</th>
+                                    <th>Описание</th>
+                                </tr>
+                                <c:forEach items="${positionList}" var="position" varStatus="loopPos">
+                                    <jsp:useBean id="position" type="com.mysite.webapp.model.Organization.Position"/>
+                                    <tr>
+                                        <td>​<input type="text" name="${type}${loop.index}_${loopPos.index}_start" size=30 value="${position.getStartDate().toString()}"></td>
+                                        <td>​<input type="text" name="${type}${loop.index}_${loopPos.index}_end" size=30 value="${position.getEndDate().toString()}"></td>
+                                        <td>​<input type="text" name="${type}${loop.index}_${loopPos.index}_title" size=30 value="${position.getTitle().toString()}"></td>
+                                        <td>​<input type="text" name="${type}${loop.index}_${loopPos.index}_description" size=30 value="${position.getDescription().toString()}"></td>
+                                    </tr>
+                                </c:forEach>
+                            </table>
+                            <input type="button" value="Добавить позицию" onclick="handleClickTable(this.id, '${type}', '${loop.index}');" id="addPosition" /><input type="button" value="Удалить последнюю позицию" onclick="handleClickTable(this.id, '${type}', '${loop.index}');" id="remPosition" />
+                        </li>
+                    </c:forEach>
+                </dd>
+                </c:when>
+            </c:choose>
         </dl>
-    </c:forEach>
+        </c:forEach>
     <hr>
     <button type="submit">Сохранить</button>
     <button type="button" onclick="window.history.back()">Отменить</button>

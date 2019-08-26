@@ -1,4 +1,4 @@
-<%@ page import="com.mysite.webapp.model.Resume" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Konstantin
   Date: 21.07.2019
@@ -35,11 +35,8 @@
         </c:forEach>
     </table>
 </section>
-<br>
 <div>
-    <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
-        Введите ФИО нового кандидата: <input type="text" name="fullName" size=50 value="${resume.fullName}"><button type="submit">Добавить</button>
-    </form>
+    <a href="resume?action=add">Добавить новое резюме</a>
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
