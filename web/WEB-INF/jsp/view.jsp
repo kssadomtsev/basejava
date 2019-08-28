@@ -32,10 +32,10 @@
                          type="java.util.Map.Entry<com.mysite.webapp.model.SectionType, com.mysite.webapp.model.AbstractSection>"/>
         <c:choose>
         <c:when test="${sectionEntry.getKey()=='OBJECTIVE' || sectionEntry.getKey()=='PERSONAL' || sectionEntry.getKey()=='ACHIEVEMENT' || sectionEntry.getKey()=='QUALIFICATIONS'}">
-                <%=sectionEntry.getKey().toHtml(sectionEntry.getValue().toHtml())%><br/>
+                <h3><%=sectionEntry.getKey().getTitle()%></h3><%=sectionEntry.getValue().toHtml()%>
         </c:when>
-        <c:when test="${sectionEntry.getKey()=='EXPERIENCE' || sectionEntry.getKey()=='EDUCATION'}">
-                <%=sectionEntry.getKey().getTitle()%><br/>
+        <c:when test="${(sectionEntry.getKey()=='EXPERIENCE' || sectionEntry.getKey()=='EDUCATION') && sectionEntry.getValue().getOrganizationList().size()!=0}">
+            <h3><%=sectionEntry.getKey().getTitle()%></h3>
             <c:set var="organizationSection" value="${sectionEntry.getValue()}"/>
             <jsp:useBean id="organizationSection" type="com.mysite.webapp.model.OrganizationSection"/>
             <c:set var="organizationList" value="${organizationSection.getOrganizationList()}"/>

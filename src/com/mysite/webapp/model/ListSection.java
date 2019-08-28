@@ -46,7 +46,7 @@ public class ListSection extends AbstractSection {
     public String toHtml() {
         final StringBuilder builder = new StringBuilder();
         contentList.forEach((val) -> builder.append("- ").append(val).append("<br/>"));
-        return "<br/>" + builder.toString();
+        return builder.toString();
 
     }
 }
